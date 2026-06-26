@@ -33,7 +33,7 @@ function Toggle({
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background',
         'cursor-pointer disabled:opacity-35 disabled:pointer-events-none',
         isSmall ? 'w-7 h-4' : 'w-9 h-5',
-        checked ? 'bg-foreground' : 'bg-surface-3',
+        checked ? 'bg-[oklch(0.45_0.12_145)]' : 'bg-surface-3',
       ].join(' ')}
     >
       <span
@@ -45,7 +45,7 @@ function Toggle({
             ? isSmall ? 'translate-x-[14px]' : 'translate-x-[18px]'
             : 'translate-x-[3px]',
         ].join(' ')}
-        style={{ backgroundColor: checked ? 'oklch(0.12 0 0)' : 'oklch(0.72 0 0)' }}
+        style={{ backgroundColor: checked ? 'oklch(0.97 0 0)' : 'oklch(0.72 0 0)' }}
       />
     </button>
   )
@@ -97,7 +97,7 @@ export default function TogglesPage() {
   return (
     <DSLayout
       title="Toggle / Switch"
-      description="Toggles replace checkboxes for binary on/off settings. Two sizes: default (36×20px) and small (28×16px). The on-state uses bg-foreground; the thumb inverts to stay visible on both tracks."
+      description="Toggles replace checkboxes for binary on/off settings. Two sizes: default (36×20px) and small (28×16px). The on-state uses a dimmed green track; the thumb is near-white to stay visible on both tracks."
     >
       <DSSection
         title="States"
@@ -108,15 +108,15 @@ export default function TogglesPage() {
   aria-checked={checked}
   className={\`relative inline-flex shrink-0 w-9 h-5 rounded-full
     transition-colors duration-150 cursor-pointer
-    \${checked ? 'bg-foreground' : 'bg-surface-3'}\`}
+    \${checked ? 'bg-[oklch(0.45_0.12_145)]' : 'bg-surface-3'}\`}
 >
   <span
     className={\`absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5
       rounded-full shadow-sm transition-transform duration-150
       \${checked ? 'translate-x-[18px]' : 'translate-x-[3px]'}\`}
     style={{ backgroundColor: checked
-      ? 'oklch(0.12 0 0)'   // dark thumb on light track
-      : 'oklch(0.72 0 0)' }} // mid-gray thumb on dark track
+      ? 'oklch(0.97 0 0)'   // near-white thumb on green track
+      : 'oklch(0.72 0 0)' }} // mid-gray thumb on dark off-track
   />
 </button>`}>
           <div className="flex items-center gap-8 flex-wrap">
