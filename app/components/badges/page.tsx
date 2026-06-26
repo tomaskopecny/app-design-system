@@ -33,6 +33,45 @@ function PreviewBox({ children, className = '' }: { children: React.ReactNode; c
   )
 }
 
+const INITIAL_TAGS = [
+  { id: 1, label: 'Bug',           color: '#E5534B' },
+  { id: 2, label: 'Feature',       color: '#4D8EE8' },
+  { id: 3, label: 'High priority', color: '#E07B39' },
+  { id: 4, label: 'Design',        color: '#9B6DFF' },
+]
+
+function RemovableTagDemo() {
+  const [tags, setTags] = useState(INITIAL_TAGS)
+  return (
+    <div className="flex flex-wrap gap-2 items-center">
+      {tags.map(tag => (
+        <span
+          key={tag.id}
+          className="inline-flex items-center gap-1 pl-2 pr-1 py-0.5 rounded-sm text-[11px] font-medium border"
+          style={{ background: tag.color + '18', color: tag.color, borderColor: tag.color + '35' }}
+        >
+          {tag.label}
+          <button
+            onClick={() => setTags(t => t.filter(x => x.id !== tag.id))}
+            aria-label={`Remove ${tag.label}`}
+            className="w-3.5 h-3.5 flex items-center justify-center rounded-sm opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+          >
+            <X className="w-2.5 h-2.5" />
+          </button>
+        </span>
+      ))}
+      {tags.length < INITIAL_TAGS.length && (
+        <button
+          onClick={() => setTags(INITIAL_TAGS)}
+          className="text-[11px] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+        >
+          Reset
+        </button>
+      )}
+    </div>
+  )
+}
+
 export default function BadgesPage() {
   return (
     <DSLayout

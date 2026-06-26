@@ -21,7 +21,7 @@ const EVENTS: TimelineEvent[] = [
   { id: '3', type: 'label', actor: 'Alice Chen', time: '2 days ago', meta: 'Feature' },
   { id: '4', type: 'status', actor: 'Alice Chen', time: '2 days ago', meta: 'In Progress' },
   { id: '5', type: 'branch', actor: 'Alice Chen', time: '2 days ago', meta: 'feat/keyboard-shortcuts' },
-  { id: '6', type: 'comment', actor: 'Carlos Diaz', time: '1 day ago', content: 'I've been thinking about the UX here — should we also support ⌘K to open the quick create modal? That way it\'s consistent with the command palette flow.' },
+  { id: '6', type: 'comment', actor: 'Carlos Diaz', time: '1 day ago', content: "I've been thinking about the UX here — should we also support ⌘K to open the quick create modal? That way it's consistent with the command palette flow." },
   { id: '7', type: 'comment', actor: 'Alice Chen', time: '1 day ago', content: 'Good call. I\'ll add that as a separate shortcut handler so we don\'t conflict with the search binding.' },
   { id: '8', type: 'status', actor: 'Alice Chen', time: '4 hours ago', meta: 'Done' },
 ]
