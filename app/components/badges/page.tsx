@@ -1,6 +1,9 @@
+'use client'
+
 import { DSLayout } from '@/components/ds/ds-layout'
 import { DSSection } from '@/components/ds/ds-section'
 import { AlertCircle, ArrowUp, Minus, ArrowDown, Circle, CheckCircle2, X, Bug, Zap, TrendingUp } from 'lucide-react'
+import { useState } from 'react'
 
 function Badge({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
@@ -26,6 +29,45 @@ function PreviewBox({ children, className = '' }: { children: React.ReactNode; c
   return (
     <div className={`p-6 bg-surface-1 flex flex-wrap gap-3 items-center rounded-t-md border border-border ${className}`}>
       {children}
+    </div>
+  )
+}
+
+const INITIAL_TAGS = [
+  { id: 1, label: 'Bug',           color: '#E5534B' },
+  { id: 2, label: 'Feature',       color: '#4D8EE8' },
+  { id: 3, label: 'High priority', color: '#E07B39' },
+  { id: 4, label: 'Design',        color: '#9B6DFF' },
+]
+
+function RemovableTagDemo() {
+  const [tags, setTags] = useState(INITIAL_TAGS)
+  return (
+    <div className="flex flex-wrap gap-2 items-center">
+      {tags.map(tag => (
+        <span
+          key={tag.id}
+          className="inline-flex items-center gap-1 pl-2 pr-1 py-0.5 rounded-sm text-[11px] font-medium border"
+          style={{ background: tag.color + '18', color: tag.color, borderColor: tag.color + '35' }}
+        >
+          {tag.label}
+          <button
+            onClick={() => setTags(t => t.filter(x => x.id !== tag.id))}
+            aria-label={`Remove ${tag.label}`}
+            className="w-3.5 h-3.5 flex items-center justify-center rounded-sm opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+          >
+            <X className="w-2.5 h-2.5" />
+          </button>
+        </span>
+      ))}
+      {tags.length < INITIAL_TAGS.length && (
+        <button
+          onClick={() => setTags(INITIAL_TAGS)}
+          className="text-[11px] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+        >
+          Reset
+        </button>
+      )}
     </div>
   )
 }
@@ -156,6 +198,37 @@ export default function BadgesPage() {
 
 // Count chip
 <span className="px-1.5 py-0.5 rounded bg-surface-3 border border-border text-[10px] font-mono">24</span>`} />
+        </div>
+      </DSSection>
+
+      {/* Removable tags */}
+      <DSSection title="Removable tags" description="Applied filters and selected labels with an inline remove button. Used in filter bars and label editors.">
+        <div className="rounded-md border border-border overflow-hidden">
+          <PreviewBox>
+            <RemovableTagDemo />
+          </PreviewBox>
+        </div>
+      </DSSection>
+
+      {/* Dot-only badge */}
+      <DSSection title="Dot-only badge" description="A bare colored dot with no label — used when the color itself is the signal and space is very constrained.">
+        <div className="rounded-md border border-border overflow-hidden">
+          <PreviewBox>
+            <div className="flex items-center gap-4">
+              {[
+                { label: 'Urgent', bg: 'bg-priority-urgent' },
+                { label: 'High', bg: 'bg-priority-high' },
+                { label: 'Medium', bg: 'bg-priority-medium' },
+                { label: 'In Progress', bg: 'bg-status-inprogress' },
+                { label: 'Done', bg: 'bg-status-done' },
+              ].map(({ label, bg }) => (
+                <div key={label} className="flex flex-col items-center gap-1.5">
+                  <span className={`w-2.5 h-2.5 rounded-full ${bg}`} aria-label={label} />
+                  <span className="text-[9px] text-muted-foreground">{label}</span>
+                </div>
+              ))}
+            </div>
+          </PreviewBox>
         </div>
       </DSSection>
 
