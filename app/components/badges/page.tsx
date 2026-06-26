@@ -1,6 +1,9 @@
+'use client'
+
 import { DSLayout } from '@/components/ds/ds-layout'
 import { DSSection } from '@/components/ds/ds-section'
 import { AlertCircle, ArrowUp, Minus, ArrowDown, Circle, CheckCircle2, X, Bug, Zap, TrendingUp } from 'lucide-react'
+import { useState } from 'react'
 
 function Badge({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
@@ -156,6 +159,37 @@ export default function BadgesPage() {
 
 // Count chip
 <span className="px-1.5 py-0.5 rounded bg-surface-3 border border-border text-[10px] font-mono">24</span>`} />
+        </div>
+      </DSSection>
+
+      {/* Removable tags */}
+      <DSSection title="Removable tags" description="Applied filters and selected labels with an inline remove button. Used in filter bars and label editors.">
+        <div className="rounded-md border border-border overflow-hidden">
+          <PreviewBox>
+            <RemovableTagDemo />
+          </PreviewBox>
+        </div>
+      </DSSection>
+
+      {/* Dot-only badge */}
+      <DSSection title="Dot-only badge" description="A bare colored dot with no label — used when the color itself is the signal and space is very constrained.">
+        <div className="rounded-md border border-border overflow-hidden">
+          <PreviewBox>
+            <div className="flex items-center gap-4">
+              {[
+                { label: 'Urgent', bg: 'bg-priority-urgent' },
+                { label: 'High', bg: 'bg-priority-high' },
+                { label: 'Medium', bg: 'bg-priority-medium' },
+                { label: 'In Progress', bg: 'bg-status-inprogress' },
+                { label: 'Done', bg: 'bg-status-done' },
+              ].map(({ label, bg }) => (
+                <div key={label} className="flex flex-col items-center gap-1.5">
+                  <span className={`w-2.5 h-2.5 rounded-full ${bg}`} aria-label={label} />
+                  <span className="text-[9px] text-muted-foreground">{label}</span>
+                </div>
+              ))}
+            </div>
+          </PreviewBox>
         </div>
       </DSSection>
 
