@@ -113,9 +113,12 @@ function MultiSelect() {
 
   return (
     <div className="relative">
-      <button
+      <div
+        role="button"
+        tabIndex={0}
         onClick={() => setOpen(!open)}
-        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded-md bg-surface-2 border border-border text-foreground hover:bg-surface-3 transition-colors cursor-pointer"
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(!open) } }}
+        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded-md bg-surface-2 border border-border text-foreground hover:bg-surface-3 transition-colors cursor-pointer select-none min-w-32"
       >
         {selected.length === 0 ? (
           <span className="text-muted-foreground">Select labels...</span>
@@ -124,7 +127,11 @@ function MultiSelect() {
             {selected.map(l => (
               <span key={l} className="flex items-center gap-0.5 px-1.5 py-0.5 bg-surface-3 rounded text-[10px] border border-border">
                 {l}
-                <button onClick={(e) => { e.stopPropagation(); toggle(l) }} className="hover:text-foreground">
+                <button
+                  onClick={(e) => { e.stopPropagation(); toggle(l) }}
+                  className="hover:text-foreground leading-none"
+                  aria-label={`Remove ${l}`}
+                >
                   <X className="w-2.5 h-2.5" />
                 </button>
               </span>
@@ -132,7 +139,7 @@ function MultiSelect() {
           </div>
         )}
         <ChevronDown className="w-3 h-3 text-muted-foreground ml-auto shrink-0" />
-      </button>
+      </div>
 
       {open && (
         <div className="absolute top-full mt-1 left-0 z-50 w-52 rounded-md border border-border bg-popover shadow-[0_4px_16px_rgba(0,0,0,0.5)] overflow-hidden">
