@@ -289,8 +289,12 @@ function WeekStrip() {
   }
 
   return (
-    <div className="flex items-center gap-0 bg-surface-1 border border-border rounded-md overflow-hidden w-full max-w-xl">
-      <button onClick={() => setAnchor(addDays(anchor, -7))} aria-label="Previous week" className="px-2 h-full flex items-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0 self-stretch focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-1 focus-visible:ring-ring">
+    <div className="flex bg-surface-1 border border-border rounded-md overflow-hidden w-full max-w-xl">
+      <button
+        onClick={() => setAnchor(addDays(anchor, -7))}
+        aria-label="Previous week"
+        className="px-2 flex items-center justify-center self-stretch shrink-0 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-1 focus-visible:ring-ring"
+      >
         <ChevronLeft className="w-3.5 h-3.5" />
       </button>
 
@@ -300,21 +304,25 @@ function WeekStrip() {
       </div>
 
       {/* Divider */}
-      <div className="w-px h-10 bg-border/80 shrink-0" />
+      <div className="w-px self-stretch bg-border/80 shrink-0" />
 
       {/* Week 2 */}
       <div className="flex flex-1 divide-x divide-border/50">
         {week2.map(d => <DayCell key={d.getTime()} date={d} />)}
       </div>
 
-      <button onClick={() => setAnchor(addDays(anchor, 7))} aria-label="Next week" className="px-2 h-full flex items-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0 self-stretch focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-1 focus-visible:ring-ring">
+      <button
+        onClick={() => setAnchor(addDays(anchor, 7))}
+        aria-label="Next week"
+        className="px-2 flex items-center justify-center self-stretch shrink-0 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-1 focus-visible:ring-ring"
+      >
         <ChevronRight className="w-3.5 h-3.5" />
       </button>
     </div>
   )
 }
 
-// ─── 4. Week time-grid (scheduler view) ──────────────────────────────────────
+// ─── 4. Week time-grid (scheduler view) ────────────────────────────────���─────
 
 const HOURS = Array.from({ length: 11 }, (_, i) => i + 8) // 8–18
 
