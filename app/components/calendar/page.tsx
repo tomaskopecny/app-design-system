@@ -3,8 +3,8 @@
 import { DSLayout } from '@/components/ds/ds-layout'
 import { DSSection, DSPreview } from '@/components/ds/ds-section'
 import { useState } from 'react'
-import { DayPicker } from 'react-day-picker'
-import { format, isToday, isSameMonth } from 'date-fns'
+import { DayPicker, type DateRange } from 'react-day-picker'
+import { format, isToday } from 'date-fns'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import 'react-day-picker/style.css'
 
@@ -22,17 +22,76 @@ const eventDates = [
 const cycleStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 5)
 const cycleEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 8)
 
-function LinearCalendar({
-  mode = 'single',
-  showEvents = false,
-  showRange = false,
-}: {
-  mode?: 'single' | 'range' | 'none'
-  showEvents?: boolean
-  showRange?: boolean
-}) {
+function LinearCalendarSingle({ showEvents = false }: { showEvents?: boolean }) {
   const [selected, setSelected] = useState<Date | undefined>(today)
-  const [range, setRange] = useState<{ from: Date | undefined; to: Date | undefined }>({
+  const [month, setMonth] = useState(today)
+
+  return (
+    <div className="inline-flex flex-col bg-popover border border-border rounded-md shadow-lg overflow-hidden w-[268px]">
+      <DayPicker
+        mode="single"
+        selected={selected}
+        onSelect={setSelected}
+        month={month}
+        onMonthChange={setMonth}
+        showOutsideDays
+        classNames={{
+          root: 'p-3',
+          months: 'relative',
+          month: 'space-y-2',
+          month_caption: 'flex items-center justify-between mb-1',
+          caption_label: 'text-xs font-semibold text-foreground',
+          nav: 'flex items-center gap-0.5',
+          button_previous: 'w-6 h-6 flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer',
+          button_next: 'w-6 h-6 flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer',
+          weeks: 'space-y-0.5',
+          weekdays: 'flex',
+          weekday: 'flex-1 text-center text-[10px] font-medium text-muted-foreground py-1',
+          week: 'flex',
+          day: 'flex-1 text-center',
+          day_button: `w-7 h-7 mx-auto flex items-center justify-center text-[11px] rounded transition-colors cursor-pointer
+            text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring`,
+          selected: '!bg-foreground !text-background hover:!bg-foreground/90',
+          today: 'font-semibold text-foreground',
+          outside: 'opacity-30',
+          disabled: 'opacity-20 pointer-events-none',
+        }}
+        components={{
+          Chevron: ({ orientation }) =>
+            orientation === 'left'
+              ? <ChevronLeft className="w-3 h-3" />
+              : <ChevronRight className="w-3 h-3" />,
+          DayButton: ({ day, modifiers, children, ...props }) => {
+            const hasEvent = showEvents && eventDates.some(d =>
+              d.getDate() === day.date.getDate() &&
+              d.getMonth() === day.date.getMonth() &&
+              d.getFullYear() === day.date.getFullYear()
+            )
+            return (
+              <button
+                {...props}
+                className={`w-7 h-7 mx-auto flex flex-col items-center justify-center text-[11px] rounded transition-colors cursor-pointer relative
+                  ${modifiers.selected ? 'bg-foreground text-background' : ''}
+                  ${modifiers.today && !modifiers.selected ? 'font-bold' : ''}
+                  ${modifiers.outside ? 'opacity-30' : ''}
+                  hover:bg-accent
+                `}
+              >
+                {children}
+                {hasEvent && !modifiers.selected && (
+                  <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-status-inprogress" />
+                )}
+              </button>
+            )
+          },
+        }}
+      />
+    </div>
+  )
+}
+
+function LinearCalendarRange() {
+  const [range, setRange] = useState<DateRange>({
     from: cycleStart,
     to: cycleEnd,
   })
@@ -41,14 +100,9 @@ function LinearCalendar({
   return (
     <div className="inline-flex flex-col bg-popover border border-border rounded-md shadow-lg overflow-hidden w-[268px]">
       <DayPicker
-        mode={mode === 'range' ? 'range' : mode === 'single' ? 'single' : undefined}
-        selected={mode === 'range' ? range : mode === 'single' ? selected : undefined}
-        onSelect={mode === 'range'
-          ? (r) => setRange(r as { from: Date | undefined; to: Date | undefined })
-          : mode === 'single'
-            ? (d) => setSelected(d as Date | undefined)
-            : undefined
-        }
+        mode="range"
+        selected={range}
+        onSelect={(r: DateRange | undefined) => setRange(r ?? { from: undefined, to: undefined })}
         month={month}
         onMonthChange={setMonth}
         showOutsideDays
@@ -81,32 +135,21 @@ function LinearCalendar({
             orientation === 'left'
               ? <ChevronLeft className="w-3 h-3" />
               : <ChevronRight className="w-3 h-3" />,
-          DayButton: ({ day, modifiers, children, ...props }) => {
-            const hasEvent = showEvents && eventDates.some(d =>
-              d.getDate() === day.date.getDate() &&
-              d.getMonth() === day.date.getMonth() &&
-              d.getFullYear() === day.date.getFullYear()
-            )
-            return (
-              <button
-                {...props}
-                className={`w-7 h-7 mx-auto flex flex-col items-center justify-center text-[11px] rounded transition-colors cursor-pointer relative
-                  ${modifiers.selected ? '!bg-foreground !text-background' : ''}
-                  ${modifiers.range_start ? 'bg-foreground text-background !rounded-full' : ''}
-                  ${modifiers.range_end ? 'bg-foreground text-background !rounded-full' : ''}
-                  ${modifiers.range_middle ? 'bg-foreground/10 text-foreground !rounded-none' : ''}
-                  ${modifiers.today && !modifiers.selected ? 'font-bold' : ''}
-                  ${modifiers.outside ? 'opacity-30' : ''}
-                  hover:bg-accent
-                `}
-              >
-                {children}
-                {hasEvent && !modifiers.selected && (
-                  <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-status-inprogress" />
-                )}
-              </button>
-            )
-          },
+          DayButton: ({ day, modifiers, children, ...props }) => (
+            <button
+              {...props}
+              className={`w-7 h-7 mx-auto flex flex-col items-center justify-center text-[11px] rounded transition-colors cursor-pointer relative
+                ${modifiers.range_start ? 'bg-foreground text-background !rounded-full' : ''}
+                ${modifiers.range_end ? 'bg-foreground text-background !rounded-full' : ''}
+                ${modifiers.range_middle ? 'bg-foreground/10 text-foreground !rounded-none' : ''}
+                ${modifiers.today && !modifiers.selected ? 'font-bold' : ''}
+                ${modifiers.outside ? 'opacity-30' : ''}
+                hover:bg-accent
+              `}
+            >
+              {children}
+            </button>
+          ),
         }}
       />
     </div>
@@ -178,19 +221,19 @@ import 'react-day-picker/style.css'
     ...
   }}
 />`}>
-          <LinearCalendar mode="single" />
+          <LinearCalendarSingle />
         </DSPreview>
       </DSSection>
 
       <DSSection title="Date range picker" description="Select a start and end date — used for cycle/sprint date definition.">
         <DSPreview>
-          <LinearCalendar mode="range" />
+          <LinearCalendarRange />
         </DSPreview>
       </DSSection>
 
       <DSSection title="With event indicators" description="Dots beneath days indicate scheduled events, due dates, or active cycles.">
         <DSPreview>
-          <LinearCalendar mode="single" showEvents />
+          <LinearCalendarSingle showEvents />
         </DSPreview>
       </DSSection>
 
