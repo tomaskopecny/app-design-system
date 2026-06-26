@@ -33,7 +33,7 @@ function Toggle({
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background',
         'cursor-pointer disabled:opacity-35 disabled:pointer-events-none',
         isSmall ? 'w-7 h-4' : 'w-9 h-5',
-        checked ? 'bg-[var(--status-done)]' : 'bg-surface-3',
+        checked ? 'bg-[var(--green-700)]' : 'bg-surface-3',
       ].join(' ')}
     >
       <span
@@ -108,7 +108,7 @@ export default function TogglesPage() {
   aria-checked={checked}
   className={\`relative inline-flex shrink-0 w-9 h-5 rounded-full
     transition-colors duration-150 cursor-pointer
-    \${checked ? 'bg-[var(--status-done)]' : 'bg-surface-3'}\`}
+    \${checked ? 'bg-[var(--green-700)]' : 'bg-surface-3'}\`}
 >
   <span
     className={\`absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5
