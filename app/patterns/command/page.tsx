@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { DSLayout } from '@/components/ds/ds-layout'
 import { DSSection } from '@/components/ds/ds-section'
 import { useState, useEffect, useRef } from 'react'
@@ -8,7 +9,19 @@ import {
   AlertCircle, ArrowUp, Minus, FileText, Hash, Layers, Command,
 } from 'lucide-react'
 
-const commandGroups = [
+type CommandItem = {
+  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>
+  label: string
+  shortcut: string | null
+  color: string | null
+}
+
+type CommandGroup = {
+  heading: string
+  items: CommandItem[]
+}
+
+const commandGroups: CommandGroup[] = [
   {
     heading: 'Issues',
     items: [
