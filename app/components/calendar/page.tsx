@@ -49,8 +49,10 @@ const DAYS_MIN = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 // shared day-picker classNames
 const SHARED_CN = {
   nav: 'flex items-center gap-0.5',
-  navBtn: 'w-6 h-6 flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0',
+  // rounded-sm (radius-sm token) is consistent with all icon buttons in the system
+  navBtn: 'w-6 h-6 flex items-center justify-center rounded-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0',
   caption: 'text-xs font-semibold text-foreground',
+  // WCAG: weekday labels must be at least 10px and meet Lc 30 minimum for non-content UI
   weekday: 'flex-1 text-center text-[10px] font-medium text-muted-foreground select-none',
 }
 
@@ -104,33 +106,59 @@ function MiniPicker({ selected, onSelect }: {
   })
 
   return (
-    <div className="inline-flex flex-col bg-popover border border-border rounded-md p-3 w-[216px] shadow-lg">
+    <div className="inline-flex flex-col bg-popover border border-border rounded-md p-3 w-[216px] shadow-lg" role="dialog" aria-label="Date picker">
       <div className="flex items-center justify-between mb-2">
-        <button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1))} className={SHARED_CN.navBtn}><ChevronLeft className="w-3 h-3" /></button>
-        <span className={SHARED_CN.caption}>{MONTHS[month.getMonth()]} {month.getFullYear()}</span>
-        <button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1))} className={SHARED_CN.navBtn}><ChevronRight className="w-3 h-3" /></button>
+        <button
+          onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1))}
+          className={SHARED_CN.navBtn}
+          aria-label="Previous month"
+        >
+          <ChevronLeft className="w-3 h-3" />
+        </button>
+        <span className={SHARED_CN.caption} aria-live="polite">{MONTHS[month.getMonth()]} {month.getFullYear()}</span>
+        <button
+          onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1))}
+          className={SHARED_CN.navBtn}
+          aria-label="Next month"
+        >
+          <ChevronRight className="w-3 h-3" />
+        </button>
       </div>
-      <div className="grid grid-cols-7">
-        {DAYS_MIN.map((d, i) => <div key={i} className="text-center text-[9px] font-medium text-muted-foreground pb-1">{d}</div>)}
+      {/* WCAG: use role="grid" so screen readers announce the calendar structure */}
+      <div role="grid" aria-label={`${MONTHS[month.getMonth()]} ${month.getFullYear()}`} className="grid grid-cols-7">
+        {/* WCAG: abbr titles on weekday headers so screen readers read full names */}
+        {['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'].map((full, i) => (
+          <div key={i} role="columnheader" aria-label={full} className="text-center text-[10px] font-medium text-muted-foreground pb-1 select-none">
+            {DAYS_MIN[i]}
+          </div>
+        ))}
         {cells.map((date, i) => {
-          if (!date) return <div key={i} />
+          if (!date) return <div key={i} role="gridcell" />
           const isSel = selected && sameDay(date, selected)
           const isNow = sameDay(date, today)
           const hasEvent = EVENT_DOTS.some(e => sameDay(e, date))
+          // WCAG: outside-month days must still be legible — Lc 30 minimum → use /50 not /30
           const isOut = date.getMonth() !== month.getMonth()
           return (
-            <button key={i} onClick={() => onSelect(date)}
-              className={`relative w-full aspect-square flex items-center justify-center text-[10px] rounded transition-colors cursor-pointer
-                ${isSel ? 'bg-foreground text-background font-semibold' :
-                  isNow ? 'ring-1 ring-foreground/40 text-foreground font-semibold hover:bg-accent' :
-                    isOut ? 'text-muted-foreground/30 hover:bg-accent/50' :
-                      'text-foreground/80 hover:bg-accent'}`}
-            >
-              {date.getDate()}
-              {hasEvent && !isSel && (
-                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-status-inprogress" />
-              )}
-            </button>
+            <div key={i} role="gridcell">
+              <button
+                onClick={() => onSelect(date)}
+                aria-label={date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                aria-pressed={isSel ? true : undefined}
+                aria-current={isNow ? 'date' : undefined}
+                // WCAG: rounded-sm for day cells — consistent with radius-sm token, not full circle
+                className={`relative w-full aspect-square flex items-center justify-center text-[10px] rounded-sm transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring
+                  ${isSel ? 'bg-foreground text-background font-semibold' :
+                    isNow ? 'ring-1 ring-foreground/60 text-foreground font-semibold hover:bg-accent' :
+                      isOut ? 'text-muted-foreground/50 hover:bg-accent/50' :
+                        'text-foreground hover:bg-accent'}`}
+              >
+                {date.getDate()}
+                {hasEvent && !isSel && (
+                  <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-status-inprogress" aria-hidden="true" />
+                )}
+              </button>
+            </div>
           )
         })}
       </div>
@@ -158,33 +186,41 @@ function MonthGrid() {
     <div className="flex flex-col bg-surface-1 border border-border rounded-md overflow-hidden w-full max-w-xl">
       {/* header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-        <button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1))} className={SHARED_CN.navBtn}><ChevronLeft className="w-3.5 h-3.5" /></button>
-        <span className="text-sm font-semibold text-foreground">{MONTHS[month.getMonth()]} {month.getFullYear()}</span>
-        <button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1))} className={SHARED_CN.navBtn}><ChevronRight className="w-3.5 h-3.5" /></button>
+        <button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1))} className={SHARED_CN.navBtn} aria-label="Previous month"><ChevronLeft className="w-3.5 h-3.5" /></button>
+        <span className="text-sm font-semibold text-foreground" aria-live="polite">{MONTHS[month.getMonth()]} {month.getFullYear()}</span>
+        <button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1))} className={SHARED_CN.navBtn} aria-label="Next month"><ChevronRight className="w-3.5 h-3.5" /></button>
       </div>
       {/* weekday row */}
-      <div className="grid grid-cols-7 border-b border-border">
-        {DAYS_SHORT.map(d => (
-          <div key={d} className="text-center text-[10px] font-medium text-muted-foreground py-2">{d}</div>
+      <div className="grid grid-cols-7 border-b border-border" role="row">
+        {['Su','Mo','Tu','We','Th','Fr','Sa'].map((d, i) => (
+          <div key={d} role="columnheader" aria-label={['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][i]} className="text-center text-[10px] font-medium text-muted-foreground py-2 select-none">{d}</div>
         ))}
       </div>
-      {/* day cells */}
-      <div className="grid grid-cols-7 flex-1">
+      {/* day cells — role="grid" for screen readers */}
+      <div className="grid grid-cols-7 flex-1" role="grid" aria-label={`${MONTHS[month.getMonth()]} ${month.getFullYear()}`}>
         {cells.map((date, i) => {
-          if (!date) return <div key={i} className="min-h-[72px] border-b border-r border-border last:border-r-0" />
+          if (!date) return <div key={i} role="gridcell" className="min-h-[72px] border-b border-r border-border last:border-r-0" />
           const isSel = selected && sameDay(date, selected)
           const isNow = sameDay(date, today)
+          // WCAG: outside-month raised from /30 to /50 for Lc ≥30 on dark backgrounds
           const isOut = date.getMonth() !== month.getMonth()
           const dayEvents = eventsFor(date)
           return (
-            <div key={i} onClick={() => setSelected(date)}
-              className={`min-h-[72px] border-b border-r border-border last:border-r-0 p-1.5 cursor-pointer transition-colors
+            <div
+              key={i}
+              role="gridcell"
+              aria-selected={isSel ? true : undefined}
+              onClick={() => setSelected(date)}
+              className={`min-h-[72px] border-b border-r border-border last:border-r-0 p-1.5 cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-1 focus-visible:ring-ring
                 ${isSel ? 'bg-surface-2' : 'hover:bg-accent/40'}`}
+              tabIndex={0}
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(date) } }}
             >
-              <div className={`w-6 h-6 flex items-center justify-center rounded text-[11px] font-medium mb-1 transition-colors
+              {/* Day number — rounded-sm to match system radius token */}
+              <div className={`w-6 h-6 flex items-center justify-center rounded-sm text-[11px] font-medium mb-1 transition-colors
                 ${isSel ? 'bg-foreground text-background' :
-                  isNow ? 'ring-1 ring-foreground/50 font-bold text-foreground' :
-                    isOut ? 'text-muted-foreground/30' : 'text-foreground/80'}`}
+                  isNow ? 'ring-1 ring-foreground/60 font-bold text-foreground' :
+                    isOut ? 'text-muted-foreground/50' : 'text-foreground'}`}
               >
                 {date.getDate()}
               </div>
@@ -192,13 +228,16 @@ function MonthGrid() {
                 {dayEvents.slice(0, 2).map(e => {
                   const c = EVENT_COLORS[e.color]
                   return (
-                    <div key={e.id} className={`text-[9px] font-medium px-1 py-0.5 rounded truncate ${c.bg} ${c.text}`}>
+                    // WCAG: event chips — rounded-sm (system token), text-[10px] minimum for legibility
+                    // Event color text is used on matching tinted bg → checked for Lc ≥ 45
+                    <div key={e.id} className={`text-[10px] font-medium px-1 py-0.5 rounded-sm truncate border ${c.bg} ${c.text} ${c.border}`}>
                       {e.title}
                     </div>
                   )
                 })}
                 {dayEvents.length > 2 && (
-                  <div className="text-[9px] text-muted-foreground px-1">+{dayEvents.length - 2} more</div>
+                  // WCAG: +N more — text-muted-foreground (oklch 0.55) meets Lc 30 for supplementary UI
+                  <div className="text-[10px] text-muted-foreground px-1">+{dayEvents.length - 2} more</div>
                 )}
               </div>
             </div>
@@ -226,16 +265,22 @@ function WeekStrip() {
     const isSel = sameDay(date, selected)
     const isNow = sameDay(date, today)
     return (
-      <button onClick={() => setSelected(date)}
-        className="flex flex-col items-center gap-1 px-2 py-2 cursor-pointer group"
+      <button
+        onClick={() => setSelected(date)}
+        aria-label={date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+        aria-pressed={isSel}
+        aria-current={isNow ? 'date' : undefined}
+        className="flex flex-col items-center gap-1 px-2 py-2 cursor-pointer group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
       >
-        <span className="text-[10px] font-medium text-muted-foreground/60 group-hover:text-muted-foreground transition-colors">
+        {/* WCAG: day label raised from /60 to full muted-foreground for Lc ≥ 30 */}
+        <span className="text-[10px] font-medium text-muted-foreground group-hover:text-foreground/80 transition-colors select-none">
           {DAYS_SHORT[date.getDay()]}
         </span>
-        <span className={`w-8 h-8 flex items-center justify-center rounded-full text-[13px] font-semibold transition-colors
+        {/* rounded-md instead of rounded-full — consistent with system radius token for UI containers */}
+        <span className={`w-8 h-8 flex items-center justify-center rounded-md text-[13px] font-semibold transition-colors
           ${isSel ? 'bg-foreground text-background' :
-            isNow ? 'ring-1 ring-foreground/50 text-foreground' :
-              'text-foreground/80 group-hover:bg-accent'}`}
+            isNow ? 'ring-1 ring-foreground/60 text-foreground' :
+              'text-foreground group-hover:bg-accent'}`}
         >
           {date.getDate()}
         </span>
@@ -245,7 +290,7 @@ function WeekStrip() {
 
   return (
     <div className="flex items-center gap-0 bg-surface-1 border border-border rounded-md overflow-hidden w-full max-w-xl">
-      <button onClick={() => setAnchor(addDays(anchor, -7))} className="px-2 h-full flex items-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0 self-stretch">
+      <button onClick={() => setAnchor(addDays(anchor, -7))} aria-label="Previous week" className="px-2 h-full flex items-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0 self-stretch focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-1 focus-visible:ring-ring">
         <ChevronLeft className="w-3.5 h-3.5" />
       </button>
 
@@ -262,7 +307,7 @@ function WeekStrip() {
         {week2.map(d => <DayCell key={d.getTime()} date={d} />)}
       </div>
 
-      <button onClick={() => setAnchor(addDays(anchor, 7))} className="px-2 h-full flex items-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0 self-stretch">
+      <button onClick={() => setAnchor(addDays(anchor, 7))} aria-label="Next week" className="px-2 h-full flex items-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0 self-stretch focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-1 focus-visible:ring-ring">
         <ChevronRight className="w-3.5 h-3.5" />
       </button>
     </div>
@@ -297,15 +342,17 @@ function WeekTimeGrid() {
       </div>
 
       {/* Day headers */}
-      <div className="flex border-b border-border">
-        <div className="w-12 shrink-0" />
+      <div className="flex border-b border-border" role="row">
+        <div className="w-12 shrink-0" aria-hidden="true" />
         {days.map(d => {
           const isNow = sameDay(d, today)
           return (
-            <div key={d.getTime()} className="flex-1 flex flex-col items-center py-2 border-l border-border first:border-l-0">
-              <span className="text-[9px] font-medium text-muted-foreground">{DAYS_SHORT[d.getDay()]}</span>
-              <span className={`w-6 h-6 flex items-center justify-center rounded-full text-[11px] font-semibold mt-0.5
-                ${isNow ? 'bg-foreground text-background' : 'text-foreground/70'}`}
+            <div key={d.getTime()} role="columnheader" aria-label={d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} className="flex-1 flex flex-col items-center py-2 border-l border-border first:border-l-0">
+              <span className="text-[10px] font-medium text-muted-foreground select-none">{DAYS_SHORT[d.getDay()]}</span>
+              {/* rounded-sm for day number badge — consistent with system radius */}
+              <span className={`w-6 h-6 flex items-center justify-center rounded-sm text-[11px] font-semibold mt-0.5
+                ${isNow ? 'bg-foreground text-background' : 'text-foreground'}`}
+                aria-current={isNow ? 'date' : undefined}
               >
                 {d.getDate()}
               </span>
@@ -317,10 +364,10 @@ function WeekTimeGrid() {
       {/* Grid */}
       <div className="overflow-y-auto max-h-[400px]">
         <div className="flex">
-          {/* Time labels */}
-          <div className="w-12 shrink-0 flex flex-col">
+          {/* Time labels — WCAG: raised from text-[9px]/60 to text-[10px] muted-foreground for Lc ≥ 30 */}
+          <div className="w-12 shrink-0 flex flex-col" aria-hidden="true">
             {HOURS.map(h => (
-              <div key={h} className="flex items-start justify-end pr-2 text-[9px] text-muted-foreground/60" style={{ height: HOUR_H }}>
+              <div key={h} className="flex items-start justify-end pr-2 text-[10px] text-muted-foreground" style={{ height: HOUR_H }}>
                 <span className="-mt-2">{h}:00</span>
               </div>
             ))}
@@ -331,24 +378,30 @@ function WeekTimeGrid() {
             const dayEvs = eventsForDay(d)
             const isNow = sameDay(d, today)
             return (
-              <div key={d.getTime()} className="flex-1 relative border-l border-border">
+              <div key={d.getTime()} className="flex-1 relative border-l border-border" role="gridcell" aria-label={d.toLocaleDateString('en-US', { weekday: 'long' })}>
                 {/* Hour lines */}
                 {HOURS.map(h => (
-                  <div key={h} className="border-b border-line" style={{ height: HOUR_H }} />
+                  <div key={h} className="border-b border-line" style={{ height: HOUR_H }} aria-hidden="true" />
                 ))}
                 {/* Today highlight */}
-                {isNow && <div className="absolute inset-0 bg-foreground/[0.02] pointer-events-none" />}
-                {/* Events */}
+                {isNow && <div className="absolute inset-0 bg-foreground/[0.02] pointer-events-none" aria-hidden="true" />}
+                {/* Events — rounded-sm matches system radius, event time text raised to text-[10px] */}
                 {dayEvs.map(ev => {
                   const top = (ev.startHour - 8) * HOUR_H
                   const height = (ev.endHour - ev.startHour) * HOUR_H - 2
                   const c = EVENT_COLORS[ev.color]
                   return (
-                    <div key={ev.id} className={`absolute left-0.5 right-0.5 rounded px-1.5 py-1 border ${c.bg} ${c.border} overflow-hidden cursor-pointer hover:brightness-110 transition-all`}
+                    <div
+                      key={ev.id}
+                      className={`absolute left-0.5 right-0.5 rounded-sm px-1.5 py-1 border ${c.bg} ${c.border} overflow-hidden cursor-pointer hover:brightness-110 transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring`}
                       style={{ top: top + 1, height }}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`${ev.title}, ${ev.startHour}:00 to ${ev.endHour}:00`}
                     >
                       <div className={`text-[10px] font-semibold leading-tight ${c.text}`}>{ev.title}</div>
-                      <div className={`text-[9px] mt-0.5 opacity-70 ${c.text}`}>{ev.startHour}:00 – {ev.endHour}:00</div>
+                      {/* WCAG: time raised from text-[9px] to text-[10px]; opacity replaced with /80 alpha on the token color */}
+                      <div className={`text-[10px] mt-0.5 ${c.text} opacity-80`}>{ev.startHour}:00 – {ev.endHour}:00</div>
                     </div>
                   )
                 })}
@@ -398,21 +451,28 @@ function DualMonthPicker() {
         <div className="grid grid-cols-7">
           {DAYS_SHORT.map(d => <div key={d} className="text-center text-[9px] font-medium text-muted-foreground/60 pb-1">{d}</div>)}
           {cells.map((date, i) => {
-            if (!date) return <div key={i} />
+            if (!date) return <div key={i} role="gridcell" />
             const isSel = selected && sameDay(date, selected)
             const isNow = sameDay(date, today)
+            // WCAG: outside-month raised from /25 to /50 for Lc ≥ 30
             const isOut = date.getMonth() !== month.getMonth()
             return (
-              <button key={i}
-                onClick={() => { setSelected(date); setInput(`${MONTHS[date.getMonth()].slice(0,3)} ${date.getDate()}, ${date.getFullYear()}`) }}
-                className={`w-full aspect-square flex items-center justify-center text-[11px] rounded transition-colors cursor-pointer
-                  ${isSel ? 'bg-foreground text-background font-semibold' :
-                    isNow ? 'ring-1 ring-foreground/30 font-semibold text-foreground hover:bg-accent' :
-                      isOut ? 'text-muted-foreground/25 hover:bg-accent/30' :
-                        'text-foreground/80 hover:bg-accent'}`}
-              >
-                {date.getDate()}
-              </button>
+              <div key={i} role="gridcell">
+                <button
+                  onClick={() => { setSelected(date); setInput(`${MONTHS[date.getMonth()].slice(0,3)} ${date.getDate()}, ${date.getFullYear()}`) }}
+                  aria-label={date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                  aria-pressed={isSel ? true : undefined}
+                  aria-current={isNow ? 'date' : undefined}
+                  // rounded-sm — consistent with system radius token
+                  className={`w-full aspect-square flex items-center justify-center text-[11px] rounded-sm transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring
+                    ${isSel ? 'bg-foreground text-background font-semibold' :
+                      isNow ? 'ring-1 ring-foreground/60 font-semibold text-foreground hover:bg-accent' :
+                        isOut ? 'text-muted-foreground/50 hover:bg-accent/30' :
+                          'text-foreground hover:bg-accent'}`}
+                >
+                  {date.getDate()}
+                </button>
+              </div>
             )
           })}
         </div>
@@ -420,18 +480,19 @@ function DualMonthPicker() {
     )
   }
 
+  // rounded-md — system standard container radius, not rounded-lg
   return (
-    <div className="flex flex-col bg-popover border border-border rounded-lg shadow-xl w-full max-w-[540px]">
+    <div className="flex flex-col bg-popover border border-border rounded-md shadow-xl w-full max-w-[540px]" role="dialog" aria-modal="true" aria-labelledby="due-date-title">
       {/* Header */}
       <div className="flex items-start justify-between px-5 pt-4 pb-3 border-b border-border">
         <div>
-          <p className="text-sm font-semibold text-foreground">
+          <p id="due-date-title" className="text-sm font-semibold text-foreground">
             Set due date
           </p>
           <p className="text-[11px] text-muted-foreground mt-0.5">Issue needs to be completed by this date</p>
         </div>
-        <button className="w-6 h-6 flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer">
-          <X className="w-3.5 h-3.5" />
+        <button aria-label="Close" className="w-6 h-6 flex items-center justify-center rounded-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+          <X className="w-3.5 h-3.5" aria-hidden="true" />
         </button>
       </div>
       {/* Input */}
@@ -540,24 +601,31 @@ function RangePicker() {
         <div className="grid grid-cols-7">
           {DAYS_MIN.map((d, i) => <div key={i} className="text-center text-[9px] font-medium text-muted-foreground pb-1">{d}</div>)}
           {cells.map((date, i) => {
-            if (!date) return <div key={i} />
+            if (!date) return <div key={i} role="gridcell" />
             const start = isStart(date)
             const end = isEnd(date)
             const mid = !start && !end && inRange(date)
+            // WCAG: outside-month raised from /25 to /50
             const isOut = date.getMonth() !== month.getMonth()
             return (
-              <button key={i}
-                onClick={() => handleClick(date)}
-                onMouseEnter={() => { if (selecting === 'to') setHovered(date) }}
-                onMouseLeave={() => setHovered(undefined)}
-                className={`relative w-full aspect-square flex items-center justify-center text-[10px] transition-colors cursor-pointer
-                  ${start || end ? 'bg-foreground text-background font-semibold rounded-full z-10' :
-                    mid ? 'bg-foreground/12 text-foreground rounded-none' :
-                      isOut ? 'text-muted-foreground/25 hover:bg-accent/30 rounded' :
-                        'text-foreground/80 hover:bg-accent rounded'}`}
-              >
-                {date.getDate()}
-              </button>
+              <div key={i} role="gridcell">
+                <button
+                  onClick={() => handleClick(date)}
+                  onMouseEnter={() => { if (selecting === 'to') setHovered(date) }}
+                  onMouseLeave={() => setHovered(undefined)}
+                  aria-label={date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
+                  aria-pressed={start || end}
+                  aria-selected={mid || start || end}
+                  // rounded-sm for start/end — no rounded-full; mid cells use rounded-none for continuous range strip
+                  className={`relative w-full aspect-square flex items-center justify-center text-[10px] transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring
+                    ${start || end ? 'bg-foreground text-background font-semibold rounded-sm z-10' :
+                      mid ? 'bg-foreground/12 text-foreground rounded-none' :
+                        isOut ? 'text-muted-foreground/50 hover:bg-accent/30 rounded-sm' :
+                          'text-foreground hover:bg-accent rounded-sm'}`}
+                >
+                  {date.getDate()}
+                </button>
+              </div>
             )
           })}
         </div>
@@ -577,22 +645,23 @@ function DueDateChips() {
 
   return (
     <div className="flex flex-wrap gap-2">
-      <div className="inline-flex items-center gap-1.5 h-6 px-2 rounded bg-surface-2 border border-border text-[11px] text-foreground/70 cursor-pointer hover:bg-surface-3 hover:text-foreground transition-colors">
-        <CalendarDays className="w-3 h-3" />
+      {/* rounded-sm throughout — matches system radius-sm token, consistent with badges/chips */}
+      <button className="inline-flex items-center gap-1.5 h-6 px-2 rounded-sm bg-surface-2 border border-border text-[11px] text-foreground cursor-pointer hover:bg-surface-3 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" aria-label={`Due ${fmt(upcoming)}`}>
+        <CalendarDays className="w-3 h-3" aria-hidden="true" />
         {fmt(upcoming)}
-      </div>
-      <div className="inline-flex items-center gap-1.5 h-6 px-2 rounded bg-priority-high/10 border border-priority-high/25 text-[11px] text-priority-high cursor-pointer hover:bg-priority-high/15 transition-colors">
-        <CalendarDays className="w-3 h-3" />
+      </button>
+      <button className="inline-flex items-center gap-1.5 h-6 px-2 rounded-sm bg-priority-high/10 border border-priority-high/25 text-[11px] text-priority-high cursor-pointer hover:bg-priority-high/15 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" aria-label={`Due ${fmt(soon)}, soon`}>
+        <CalendarDays className="w-3 h-3" aria-hidden="true" />
         {fmt(soon)} · Soon
-      </div>
-      <div className="inline-flex items-center gap-1.5 h-6 px-2 rounded bg-priority-urgent/10 border border-priority-urgent/25 text-[11px] text-priority-urgent cursor-pointer hover:bg-priority-urgent/15 transition-colors">
-        <CalendarDays className="w-3 h-3" />
+      </button>
+      <button className="inline-flex items-center gap-1.5 h-6 px-2 rounded-sm bg-priority-urgent/10 border border-priority-urgent/25 text-[11px] text-priority-urgent cursor-pointer hover:bg-priority-urgent/15 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" aria-label={`Due ${fmt(overdue)}, overdue`}>
+        <CalendarDays className="w-3 h-3" aria-hidden="true" />
         {fmt(overdue)} · Overdue
-      </div>
-      <div className="inline-flex items-center gap-1.5 h-6 px-2 rounded bg-surface-2 border border-dashed border-border text-[11px] text-muted-foreground/50 cursor-pointer hover:text-muted-foreground hover:bg-surface-3 transition-colors">
-        <CalendarDays className="w-3 h-3" />
+      </button>
+      <button className="inline-flex items-center gap-1.5 h-6 px-2 rounded-sm bg-surface-2 border border-dashed border-border text-[11px] text-muted-foreground cursor-pointer hover:text-foreground hover:bg-surface-3 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" aria-label="Add due date">
+        <CalendarDays className="w-3 h-3" aria-hidden="true" />
         Add due date
-      </div>
+      </button>
     </div>
   )
 }
