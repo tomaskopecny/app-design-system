@@ -17,6 +17,65 @@ function Swatch({ name, variable, hex, textDark = false }: { name: string; varia
   )
 }
 
+const SCALES: { name: string; prefix: string; hue: number; chroma: number }[] = [
+  { name: 'Gray',   prefix: '--gray',   hue: 0,   chroma: 0    },
+  { name: 'Blue',   prefix: '--blue',   hue: 255, chroma: 0.18 },
+  { name: 'Green',  prefix: '--green',  hue: 145, chroma: 0.16 },
+  { name: 'Red',    prefix: '--red',    hue: 25,  chroma: 0.22 },
+  { name: 'Orange', prefix: '--orange', hue: 50,  chroma: 0.19 },
+  { name: 'Yellow', prefix: '--yellow', hue: 95,  chroma: 0.17 },
+  { name: 'Purple', prefix: '--purple', hue: 295, chroma: 0.20 },
+]
+
+// Lightness values for steps 100–900 (mirrors globals.css)
+const LIGHTNESS: Record<number, number> = {
+  100: 0.97, 200: 0.88, 300: 0.75, 400: 0.62, 500: 0.50,
+  600: 0.38, 700: 0.27, 800: 0.18, 900: 0.11,
+}
+// For colored scales the mid-stop lightness matches globals.css per-hue
+const LIGHTNESS_COLORED: Record<string, Record<number, number>> = {
+  Blue:   { 100: 0.92, 200: 0.83, 300: 0.74, 400: 0.65, 500: 0.57, 600: 0.48, 700: 0.38, 800: 0.28, 900: 0.18 },
+  Green:  { 100: 0.93, 200: 0.84, 300: 0.75, 400: 0.65, 500: 0.56, 600: 0.47, 700: 0.37, 800: 0.27, 900: 0.17 },
+  Red:    { 100: 0.93, 200: 0.84, 300: 0.76, 400: 0.68, 500: 0.60, 600: 0.50, 700: 0.40, 800: 0.29, 900: 0.18 },
+  Orange: { 100: 0.94, 200: 0.86, 300: 0.78, 400: 0.70, 500: 0.62, 600: 0.52, 700: 0.41, 800: 0.30, 900: 0.19 },
+  Yellow: { 100: 0.97, 200: 0.92, 300: 0.87, 400: 0.82, 500: 0.75, 600: 0.64, 700: 0.50, 800: 0.36, 900: 0.22 },
+  Purple: { 100: 0.93, 200: 0.84, 300: 0.75, 400: 0.66, 500: 0.57, 600: 0.47, 700: 0.37, 800: 0.27, 900: 0.17 },
+}
+const STEPS = [100, 200, 300, 400, 500, 600, 700, 800, 900]
+
+function ScaleRow({ scale }: { scale: (typeof SCALES)[0] }) {
+  const lightnessMap = scale.name === 'Gray' ? LIGHTNESS : LIGHTNESS_COLORED[scale.name]
+  return (
+    <div className="space-y-1.5">
+      <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">{scale.name}</p>
+      <div className="flex gap-px overflow-hidden rounded-md border border-border/40">
+        {STEPS.map(step => {
+          const l = lightnessMap[step]
+          const c = scale.name === 'Gray' ? 0 : (step <= 200 ? scale.chroma * 0.33 : step <= 300 ? scale.chroma * 0.66 : step <= 800 ? scale.chroma : scale.chroma * 0.5)
+          const bg = `oklch(${l} ${c} ${scale.hue})`
+          const labelL = l > 0.55 ? 'oklch(0.10 0 0)' : 'oklch(0.97 0 0)'
+          return (
+            <div
+              key={step}
+              className="flex-1 flex flex-col items-center justify-end gap-0.5 py-2 min-h-[64px]"
+              style={{ background: bg }}
+            >
+              <span className="text-[9px] font-semibold tabular-nums" style={{ color: labelL }}>{step}</span>
+            </div>
+          )
+        })}
+      </div>
+      <div className="flex gap-px">
+        {STEPS.map(step => (
+          <div key={step} className="flex-1 text-center">
+            <code className="text-[9px] text-muted-foreground font-mono">{scale.prefix}-{step}</code>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function TokenRow({ token, value, description }: { token: string; value: string; description: string }) {
   return (
     <div className="flex items-center gap-4 py-2.5 border-b border-border last:border-0">
@@ -45,6 +104,16 @@ export default function ColorsPage() {
           <Swatch name="Surface 2" variable="--surface-2" hex="#1C1C1E" />
           <Swatch name="Surface 3" variable="--surface-3" hex="#242426" />
           <Swatch name="Foreground" variable="--foreground" hex="#F5F5F5" textDark />
+        </div>
+      </DSSection>
+
+      {/* Color scales */}
+      <DSSection
+        title="Color scales"
+        description="Each hue runs from 100 (near-white, very light) to 900 (near-black, very dark). Use lower stops for backgrounds and tints, mid stops for icons and badges, upper stops for text on light surfaces."
+      >
+        <div className="space-y-5">
+          {SCALES.map(scale => <ScaleRow key={scale.name} scale={scale} />)}
         </div>
       </DSSection>
 
