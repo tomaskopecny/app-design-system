@@ -43,6 +43,7 @@ import {
   Sparkles,
   Layers2,
   BookOpen,
+  X,
 } from 'lucide-react'
 
 const sections = [
@@ -122,27 +123,43 @@ const sections = [
   },
 ]
 
-export function DSSidebar() {
+interface DSSidebarProps {
+  open: boolean
+  onClose: () => void
+}
+
+export function DSSidebar({ open, onClose }: DSSidebarProps) {
   const pathname = usePathname()
 
-  return (
-    <aside className="fixed top-0 left-0 h-screen w-56 bg-sidebar border-r border-sidebar-border flex flex-col overflow-hidden z-40">
+  const navContent = (
+    <>
       {/* Logo / Title */}
-      <div className="px-4 py-3.5 border-b border-sidebar-border flex items-center gap-2.5">
-        <div className="w-5 h-5 rounded-[4px] bg-foreground flex items-center justify-center">
-          <span className="text-[9px] font-black text-background leading-none">A</span>
+      <div className="px-4 py-3.5 border-b border-sidebar-border flex items-center justify-between gap-2.5 shrink-0">
+        <div className="flex items-center gap-2.5">
+          <div className="w-5 h-5 rounded-[4px] bg-foreground flex items-center justify-center">
+            <span className="text-[9px] font-black text-background leading-none">A</span>
+          </div>
+          <span className="text-sm font-medium text-foreground tracking-tight">App System</span>
         </div>
-        <span className="text-sm font-medium text-foreground tracking-tight">App System</span>
+        {/* Close button — mobile only */}
+        <button
+          onClick={onClose}
+          className="md:hidden p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-sidebar-accent active:opacity-70 transition-colors touch-manipulation"
+          aria-label="Close navigation"
+        >
+          <X className="w-4 h-4" />
+        </button>
       </div>
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto py-3">
-        {/* Overview — always visible at top */}
+        {/* Overview */}
         <div className="mb-3 px-2">
           <Link
             href="/"
+            onClick={onClose}
             className={cn(
-              'flex items-center gap-2.5 px-2 py-1.5 text-sm rounded-md transition-colors',
+              'flex items-center gap-2.5 px-2 py-2.5 text-sm rounded-md transition-colors active:opacity-70',
               pathname === '/'
                 ? 'text-foreground bg-sidebar-accent'
                 : 'text-sidebar-foreground hover:text-foreground hover:bg-sidebar-accent/60',
@@ -164,8 +181,9 @@ export function DSSidebar() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={onClose}
                   className={cn(
-                    'flex items-center gap-2.5 px-4 py-1.5 text-sm transition-colors',
+                    'flex items-center gap-2.5 px-4 py-2.5 text-sm transition-colors active:opacity-70',
                     active
                       ? 'text-foreground bg-sidebar-accent'
                       : 'text-sidebar-foreground hover:text-foreground hover:bg-sidebar-accent/60',
@@ -181,11 +199,35 @@ export function DSSidebar() {
       </nav>
 
       {/* Bottom hint */}
-      <div className="px-4 py-3 border-t border-sidebar-border">
-        <p className="text-[11px] text-muted-foreground/50 leading-relaxed">
-          App System
-        </p>
+      <div className="px-4 py-3 border-t border-sidebar-border shrink-0">
+        <p className="text-[11px] text-muted-foreground/50 leading-relaxed">App System</p>
       </div>
-    </aside>
+    </>
+  )
+
+  return (
+    <>
+      {/* Mobile backdrop */}
+      {open && (
+        <div
+          className="fixed inset-0 z-30 bg-black/40 md:hidden"
+          onClick={onClose}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Sidebar panel */}
+      <aside
+        className={cn(
+          'fixed top-0 left-0 h-screen w-56 bg-sidebar border-r border-sidebar-border flex flex-col overflow-hidden z-40 transition-transform duration-200',
+          // Mobile: hidden by default, slide in when open
+          open ? 'translate-x-0' : '-translate-x-full',
+          // Desktop: always visible
+          'md:translate-x-0',
+        )}
+      >
+        {navContent}
+      </aside>
+    </>
   )
 }

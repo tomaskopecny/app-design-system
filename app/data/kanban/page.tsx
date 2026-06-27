@@ -101,7 +101,7 @@ function KanbanCardComponent({ card }: { card: KanbanCard }) {
           )}
         </div>
         <div className="flex items-center gap-1">
-          <button className="opacity-0 group-hover:opacity-100 w-5 h-5 flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-surface-3 transition-all cursor-pointer">
+          <button className="opacity-0 group-hover:opacity-100 w-7 h-7 flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-surface-3 active:opacity-70 transition-all cursor-pointer touch-manipulation">
             <MoreHorizontal className="w-3 h-3" />
           </button>
           {card.assignee && <Avatar initials={card.assignee.initials} color={card.assignee.color} size="xs" />}
@@ -113,7 +113,7 @@ function KanbanCardComponent({ card }: { card: KanbanCard }) {
 
 function KanbanColumn({ column }: { column: typeof columns[0] }) {
   return (
-    <div className="flex flex-col min-w-0">
+    <div className="flex flex-col w-56 shrink-0">
       {/* Column header */}
       <div className="flex items-center gap-2 mb-2.5 px-0.5">
         <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${column.color}`} />
@@ -144,7 +144,7 @@ export default function KanbanPage() {
       description="Board view cards show issue title, priority icon, ID, labels, assignee avatar, and optional sub-issue/comment counts. Hover reveals the action button."
     >
       <DSSection title="Board view" description="4-column layout for the board view. Each column has a header with status dot, name, count, and add button.">
-        <div className="grid grid-cols-4 gap-3 min-w-0 overflow-x-auto">
+        <div className="flex gap-3 overflow-x-auto pb-2 -mb-2">
           {columns.map(col => (
             <KanbanColumn key={col.title} column={col} />
           ))}

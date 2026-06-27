@@ -78,8 +78,8 @@ export default function TablesPage() {
         title="Sortable data table"
         description="Click column headers to sort. Click rows to select them."
       >
-        <div className="rounded-md border border-border overflow-hidden">
-          <table className="w-full text-sm border-collapse">
+        <div className="rounded-md border border-border overflow-hidden overflow-x-auto">
+          <table className="w-full min-w-[600px] text-sm border-collapse">
             <thead>
               <tr className="border-b border-border bg-surface-2">
                 {/* Select-all */}

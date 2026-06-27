@@ -19,7 +19,7 @@ function Modal({
   if (!open) return null
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 px-4"
       onClick={onClose}
     >
       <div
@@ -39,7 +39,7 @@ function ModalHeader({ title, onClose }: { title: string; onClose: () => void })
       <h2 className="text-sm font-semibold text-foreground">{title}</h2>
       <button
         onClick={onClose}
-        className="w-6 h-6 flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-surface-3 transition-colors cursor-pointer"
+        className="w-8 h-8 flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-surface-3 active:opacity-70 transition-colors cursor-pointer touch-manipulation"
       >
         <X className="w-3.5 h-3.5" />
       </button>
