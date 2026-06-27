@@ -106,10 +106,9 @@ function NavRow({ item, onClose }: { item: NavItem; onClose: () => void }) {
             <button
               key={child.label}
               onClick={onClose}
-              className="w-full flex items-center gap-3 px-5 py-3 text-left text-muted-foreground hover:text-foreground hover:bg-surface-2 active:bg-surface-2 transition-colors touch-manipulation cursor-pointer"
+              className="w-full px-5 py-3 text-left text-sm text-muted-foreground hover:text-foreground hover:bg-surface-2 active:bg-surface-2 transition-colors touch-manipulation cursor-pointer"
             >
-              <child.icon className="w-4 h-4 shrink-0" strokeWidth={1.5} />
-              <span className="text-sm">{child.label}</span>
+              {child.label}
             </button>
           ))}
         </div>
@@ -189,15 +188,15 @@ function InlineSheet({
           <div className="w-8 h-1 rounded-full bg-border" />
         </div>
         <div className="px-5 pt-3 pb-2">
-          <p className="text-base font-semibold text-foreground">Menu</p>
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Menu</p>
         </div>
-        <div className="pb-6 overflow-y-auto max-h-[60vh]">
+        <div className="overflow-y-auto max-h-[55vh]">
           {items.map(item => (
             <NavRow key={item.label} item={item} onClose={onClose} />
           ))}
         </div>
-        {/* Close button — grey circle, same bottom-right position as FAB */}
-        <div className="absolute bottom-6 right-4">
+        {/* Close button — below last nav item, aligned to right */}
+        <div className="flex justify-end px-4 py-4">
           <button
             onClick={onClose}
             aria-label="Close menu"
