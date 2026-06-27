@@ -19,12 +19,12 @@ function Modal({
   if (!open) return null
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-md"
       onClick={onClose}
     >
       <div
-        className={`relative w-full ${width} rounded-lg border border-border bg-popover`}
-        style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.6)' }}
+        className={`relative w-full ${width} rounded-lg border border-border bg-popover/95 backdrop-blur-sm`}
+        style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.35)' }}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
@@ -406,7 +406,7 @@ export default function ModalsPage() {
             <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Spec</p>
           </div>
           {[
-            ['Backdrop',   'fixed inset-0 z-50 · bg-black/60 · backdrop-blur-sm · click to dismiss'],
+            ['Backdrop',   'fixed inset-0 z-50 · bg-black/20 · backdrop-blur-md · click to dismiss'],
             ['Panel',      'rounded-lg · border border-border · bg-popover · shadow-[0_8px_32px_rgba(0,0,0,0.6)]'],
             ['Header',     'px-5 py-4 · border-b · flex justify-between · 14px font-semibold + close icon button'],
             ['Close btn',  'w-6 h-6 · rounded · text-muted-foreground hover:text-foreground hover:bg-surface-3'],
@@ -429,7 +429,7 @@ export default function ModalsPage() {
           <pre className="font-mono text-[11px] text-muted-foreground leading-relaxed overflow-x-auto">{`// Backdrop + panel
 {open && (
   <div className="fixed inset-0 z-50 flex items-center justify-center
-    bg-black/60 backdrop-blur-sm"
+    bg-black/20 backdrop-blur-md"
     onClick={onClose}>
     <div
       className="relative w-full max-w-md rounded-lg border border-border bg-popover"
