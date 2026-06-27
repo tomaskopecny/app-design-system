@@ -131,7 +131,7 @@ export function DSSidebar() {
         <div className="w-5 h-5 rounded-[4px] bg-foreground flex items-center justify-center">
           <span className="text-[9px] font-black text-background leading-none">A</span>
         </div>
-        <span className="text-sm font-medium text-foreground tracking-tight">A Design System</span>
+        <span className="text-sm font-medium text-foreground tracking-tight">App System</span>
       </div>
 
       {/* Nav */}
@@ -166,7 +166,7 @@ export function DSSidebar() {
       {/* Bottom hint */}
       <div className="px-4 py-3 border-t border-sidebar-border">
         <p className="text-[11px] text-muted-foreground/50 leading-relaxed">
-          A Design System
+          App System
         </p>
       </div>
     </aside>

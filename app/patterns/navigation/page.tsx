@@ -260,7 +260,7 @@ function MarketingNav({ align = 'right' }: { align?: 'left' | 'center' | 'right'
       <div className="w-5 h-5 rounded-[4px] bg-foreground flex items-center justify-center">
         <span className="text-[9px] font-black text-background leading-none">A</span>
       </div>
-      <span className="text-sm font-semibold text-foreground">A Design System</span>
+      <span className="text-sm font-semibold text-foreground">App System</span>
     </div>
   )
 
@@ -327,7 +327,7 @@ function MarketingNav({ align = 'right' }: { align?: 'left' | 'center' | 'right'
       <button className="text-[13px] text-muted-foreground hover:text-foreground transition-colors cursor-pointer px-2">
         Log in
       </button>
-      <button className="px-3.5 py-1.5 text-[13px] font-medium rounded-full bg-foreground text-background hover:bg-foreground/90 transition-colors cursor-pointer">
+      <button className="px-3.5 py-1.5 text-[13px] font-medium rounded-full bg-foreground text-background hover:bg-foreground/90 transition-colors cursor-pointer whitespace-nowrap">
         Sign up
       </button>
     </div>
@@ -417,7 +417,7 @@ function HamburgerDemo() {
           <div className="w-5 h-5 rounded-[4px] bg-foreground flex items-center justify-center">
             <span className="text-[9px] font-black text-background leading-none">A</span>
           </div>
-          <span className="text-sm font-semibold text-foreground">A Design System</span>
+          <span className="text-sm font-semibold text-foreground">App System</span>
         </div>
         <button
           onClick={() => setOpen(!open)}

@@ -9,7 +9,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'A Design System',
+  title: 'App System',
   description: 'A comprehensive dark, minimal, keyboard-first design system.',
   generator: 'v0.app',
 }
