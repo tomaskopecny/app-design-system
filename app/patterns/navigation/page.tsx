@@ -358,14 +358,13 @@ function MarketingNav({ align = 'right' }: { align?: 'left' | 'center' | 'right'
           </>
         )}
 
-        {/* Right-aligned — logo right */}
+        {/* Right-aligned — logo left, links + buttons pushed right */}
         {align === 'right' && (
           <>
-            <AuthButtons />
+            <Logo />
             <div className="flex-1" />
             <NavLinks />
-            <div className="flex-1" />
-            <Logo />
+            <AuthButtons className="ml-4" />
           </>
         )}
       </div>
@@ -497,7 +496,7 @@ export default function NavigationPage() {
 
       <DSSection
         title="Marketing top nav — links right"
-        description="Auth CTAs left, nav links right-of-center, logo anchored far right. Uncommon but used in right-to-left markets or for distinct brand emphasis."
+        description="Logo anchored left, nav links and auth CTAs pushed to the right side of the bar. Same element order as the other variants — logo → links → buttons — just with the weight shifted right."
       >
         <MarketingNav align="right" />
       </DSSection>
