@@ -6,8 +6,7 @@ import {
   Bell, FileText, Layers, ChevronRight, Zap,
 } from 'lucide-react'
 import { DSLayout } from '@/components/ds/ds-layout'
-import { DSSection } from '@/components/ds/ds-section'
-import { DSPreview } from '@/components/ds/ds-preview'
+import { DSSection, DSPreview } from '@/components/ds/ds-section'
 
 // ─── Primitives ───────────────────────────────────────────────────────────────
 
