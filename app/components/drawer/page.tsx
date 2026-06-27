@@ -1,9 +1,7 @@
 'use client'
 
 import { DSLayout } from '@/components/ds/ds-layout'
-import { DSSection } from '@/components/ds/ds-section'
-import { PreviewBox } from '@/components/ds/preview-box'
-import { CodeSnippet } from '@/components/ds/code-snippet'
+import { DSSection, DSPreview } from '@/components/ds/ds-section'
 import { useState } from 'react'
 import { X, SlidersHorizontal, Settings, Bell, CheckCircle2, Circle, AlertCircle, ChevronRight, Filter } from 'lucide-react'
 
@@ -288,46 +286,37 @@ export default function DrawerPage() {
         title="Right drawer — issue detail"
         description="Slides in from the right. The most common use case: selecting an issue row opens its detail panel without navigating away, keeping list context visible on the left."
       >
-        <div className="rounded-md border border-border overflow-hidden">
-          <PreviewBox>
-            <IssueDrawerDemo />
-          </PreviewBox>
-          <CodeSnippet code={`<Drawer open={open} onClose={() => setOpen(false)} title="ENG-2451" side="right">
+        <DSPreview code={`<Drawer open={open} onClose={() => setOpen(false)} title="ENG-2451" side="right">
   {/* content */}
-</Drawer>`} />
-        </div>
+</Drawer>`}>
+          <IssueDrawerDemo />
+        </DSPreview>
       </DSSection>
 
       <DSSection
         title="Left drawer — settings"
         description="Slides in from the left. Used for persistent navigation panels, workspace settings, or secondary navigation that relates to the leading edge of the layout."
       >
-        <div className="rounded-md border border-border overflow-hidden">
-          <PreviewBox>
-            <SettingsDrawerDemo />
-          </PreviewBox>
-          <CodeSnippet code={`<Drawer open={open} onClose={() => setOpen(false)} title="Preferences" side="left">
+        <DSPreview code={`<Drawer open={open} onClose={() => setOpen(false)} title="Preferences" side="left">
   {/* content */}
-</Drawer>`} />
-        </div>
+</Drawer>`}>
+          <SettingsDrawerDemo />
+        </DSPreview>
       </DSSection>
 
       <DSSection
         title="Bottom drawer — filters"
         description="Rises from the bottom edge. Preferred on mobile for filter sheets, action sheets, and pickers. On desktop it can also work for contextual toolbars."
       >
-        <div className="rounded-md border border-border overflow-hidden">
-          <PreviewBox>
-            <FilterDrawerDemo />
-          </PreviewBox>
-          <CodeSnippet code={`<Drawer open={open} onClose={() => setOpen(false)} title="Filter issues" side="bottom">
+        <DSPreview code={`<Drawer open={open} onClose={() => setOpen(false)} title="Filter issues" side="bottom">
   {/* content */}
-</Drawer>`} />
-        </div>
+</Drawer>`}>
+          <FilterDrawerDemo />
+        </DSPreview>
       </DSSection>
 
       <DSSection title="Drawer anatomy">
-        <CodeSnippet code={`// side: 'right' | 'left' | 'bottom'
+        <DSPreview code={`// side: 'right' | 'left' | 'bottom'
 // Clicking the backdrop calls onClose — same as modal pattern.
 // Bottom drawer uses max-h-[85vh] + overflow-y-auto to stay scrollable.
 
@@ -341,7 +330,9 @@ export default function DrawerPage() {
   <div className="px-5 py-4">
     {/* Drawer body */}
   </div>
-</Drawer>`} />
+</Drawer>`}>
+          <span className="text-xs text-muted-foreground">See code snippet below</span>
+        </DSPreview>
       </DSSection>
     </DSLayout>
   )
