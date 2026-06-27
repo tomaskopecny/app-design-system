@@ -482,7 +482,7 @@ function CollapsibleSideNav() {
       {/* The nav itself */}
       <nav
         className={cn(
-          'flex flex-col bg-sidebar border border-sidebar-border rounded-lg overflow-hidden transition-all duration-200',
+          'relative flex flex-col bg-sidebar border border-sidebar-border rounded-lg transition-all duration-200',
           collapsed ? 'w-14' : 'w-56',
         )}
         style={{ minHeight: 420 }}
@@ -495,7 +495,7 @@ function CollapsibleSideNav() {
         </div>
 
         {/* Nav items */}
-        <div className="flex-1 overflow-y-auto py-2">
+        <div className="flex-1 overflow-y-auto overflow-x-visible py-2">
           {sideNavItems.map((item) => {
             const Icon = item.icon
             const isActive   = activeItem === item.id || item.children?.some(c => c.id === activeItem)
