@@ -453,6 +453,170 @@ function HamburgerDemo() {
   )
 }
 
+// ─── Collapsible Side Nav ─────────────────────────────────────────────────────
+const sideNavItems = [
+  { id: 'faults',   label: 'Faults & Outages',  icon: Bell,        badge: false },
+  { id: 'clients',  label: 'Clients',            icon: Users,       badge: false },
+  {
+    id: 'apps', label: 'Applications', icon: Puzzle, badge: true,
+    children: [
+      { id: 'app-cats',  label: 'App Categories' },
+      { id: 'subapps',   label: 'Sub-applications' },
+      { id: 'subitem',   label: 'Sub-item' },
+    ],
+  },
+  { id: 'infra',    label: 'Infrastructure',     icon: Cpu,         badge: false },
+  { id: 'changes',  label: 'IT Changes',         icon: GitPullRequest, badge: false },
+  { id: 'contacts', label: 'Contacts',           icon: Users,       badge: false },
+  { id: 'docs',     label: 'Documents',          icon: FileText,    badge: false },
+]
+
+function CollapsibleSideNav() {
+  const [collapsed, setCollapsed] = useState(false)
+  const [activeItem, setActiveItem] = useState('subapps')
+  const [expanded, setExpanded]   = useState<string | null>('apps')
+  const [tooltip, setTooltip]     = useState<string | null>(null)
+
+  return (
+    <div className="flex gap-6 items-start">
+      {/* The nav itself */}
+      <nav
+        className={cn(
+          'flex flex-col bg-sidebar border border-sidebar-border rounded-lg overflow-hidden transition-all duration-200',
+          collapsed ? 'w-14' : 'w-56',
+        )}
+        style={{ minHeight: 420 }}
+      >
+        {/* Logo */}
+        <div className="flex items-center justify-center h-14 border-b border-sidebar-border shrink-0">
+          <div className="w-8 h-8 rounded-md bg-foreground flex items-center justify-center shrink-0">
+            <span className="text-[11px] font-black text-background leading-none">A</span>
+          </div>
+        </div>
+
+        {/* Nav items */}
+        <div className="flex-1 overflow-y-auto py-2">
+          {sideNavItems.map((item) => {
+            const Icon = item.icon
+            const isActive   = activeItem === item.id || item.children?.some(c => c.id === activeItem)
+            const isExpanded = expanded === item.id
+            const hasChildren = !!item.children
+
+            return (
+              <div key={item.id}>
+                <div className="relative">
+                  <button
+                    onClick={() => {
+                      if (hasChildren) {
+                        setExpanded(isExpanded ? null : item.id)
+                      } else {
+                        setActiveItem(item.id)
+                        setExpanded(null)
+                      }
+                    }}
+                    onMouseEnter={() => collapsed && setTooltip(item.id)}
+                    onMouseLeave={() => setTooltip(null)}
+                    className={cn(
+                      'w-full flex items-center gap-3 transition-colors touch-manipulation active:opacity-70',
+                      collapsed ? 'justify-center px-0 py-3' : 'px-3 py-2.5',
+                      isActive
+                        ? 'text-foreground'
+                        : 'text-muted-foreground hover:text-foreground',
+                    )}
+                  >
+                    {/* Icon with optional active circle */}
+                    <span className={cn(
+                      'relative flex items-center justify-center w-8 h-8 rounded-full shrink-0 transition-colors',
+                      isActive ? 'bg-muted' : '',
+                    )}>
+                      <Icon className="w-4 h-4" strokeWidth={1.5} />
+                      {item.badge && (
+                        <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-destructive" />
+                      )}
+                    </span>
+
+                    {/* Label + chevron */}
+                    {!collapsed && (
+                      <>
+                        <span className="flex-1 text-sm text-left">{item.label}</span>
+                        {hasChildren && (
+                          <ChevronDown
+                            className={cn(
+                              'w-3.5 h-3.5 shrink-0 transition-transform duration-150',
+                              isExpanded ? 'rotate-180' : '',
+                            )}
+                          />
+                        )}
+                      </>
+                    )}
+                  </button>
+
+                  {/* Tooltip when collapsed */}
+                  {collapsed && tooltip === item.id && (
+                    <div className="absolute left-[calc(100%+8px)] top-1/2 -translate-y-1/2 z-50 pointer-events-none">
+                      <div className="bg-foreground text-background text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap">
+                        {item.label}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Sub-items accordion */}
+                {!collapsed && hasChildren && isExpanded && (
+                  <div className="pl-11 pb-1">
+                    {item.children!.map((child) => (
+                      <button
+                        key={child.id}
+                        onClick={() => setActiveItem(child.id)}
+                        className={cn(
+                          'w-full text-left px-3 py-2.5 text-sm rounded-md transition-colors touch-manipulation active:opacity-70',
+                          activeItem === child.id
+                            ? 'bg-muted text-foreground font-medium'
+                            : 'text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/50',
+                        )}
+                      >
+                        {child.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Collapse toggle */}
+        <div className="border-t border-sidebar-border">
+          <button
+            onClick={() => { setCollapsed(c => !c); setTooltip(null) }}
+            className={cn(
+              'w-full flex items-center py-3 text-muted-foreground hover:text-foreground transition-colors touch-manipulation active:opacity-70',
+              collapsed ? 'justify-center' : 'px-4 gap-2',
+            )}
+          >
+            <ChevronRight
+              className={cn(
+                'w-4 h-4 transition-transform duration-200',
+                !collapsed ? 'rotate-180' : '',
+              )}
+            />
+            {!collapsed && <span className="text-xs">Collapse</span>}
+          </button>
+        </div>
+      </nav>
+
+      {/* Interaction hint */}
+      <div className="text-xs text-muted-foreground mt-4 space-y-1 leading-relaxed">
+        <p className="font-medium text-foreground">Try it:</p>
+        <p>Click items to set active state.</p>
+        <p>Click &quot;Applications&quot; to expand sub-nav.</p>
+        <p>Use the bottom arrow to collapse.</p>
+        <p>Hover icons in collapsed mode to see tooltips.</p>
+      </div>
+    </div>
+  )
+}
+
 export default function NavigationPage() {
   return (
     <DSLayout
@@ -506,6 +670,13 @@ export default function NavigationPage() {
         description="Collapsed to a single icon button at narrow viewports. Clicking opens a full-width stacked link list with Log in and Sign up CTAs at the bottom."
       >
         <HamburgerDemo />
+      </DSSection>
+
+      <DSSection
+        title="Collapsible side nav"
+        description="Icon-only collapsed mode with pill tooltips on hover, expand/collapse toggle at the bottom, and inline accordion sub-navigation. Active items get a circular background on the icon. Click items and the bottom arrow to interact."
+      >
+        <CollapsibleSideNav />
       </DSSection>
 
       <DSSection title="Sidebar spec">
