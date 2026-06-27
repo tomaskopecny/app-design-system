@@ -71,6 +71,7 @@ const sections = [
       { label: 'Buttons',             href: '/components/buttons',           icon: Box },
       { label: 'Calendar',            href: '/components/calendar',          icon: Calendar },
       { label: 'Callout',             href: '/components/callout',           icon: AlertCircle },
+      { label: 'Charts',              href: '/components/charts',            icon: BarChart2 },
       { label: 'Checkboxes & Radio',  href: '/components/checkboxes',        icon: CheckSquare },
       { label: 'Code Block',          href: '/components/code-block',        icon: Code2 },
       { label: 'Drawer',              href: '/components/drawer',            icon: SlidersHorizontal },
@@ -136,6 +137,22 @@ export function DSSidebar() {
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto py-3">
+        {/* Overview — always visible at top */}
+        <div className="mb-3 px-2">
+          <Link
+            href="/"
+            className={cn(
+              'flex items-center gap-2.5 px-2 py-1.5 text-sm rounded-md transition-colors',
+              pathname === '/'
+                ? 'text-foreground bg-sidebar-accent'
+                : 'text-sidebar-foreground hover:text-foreground hover:bg-sidebar-accent/60',
+            )}
+          >
+            <Layers className="w-3.5 h-3.5 shrink-0 opacity-70" />
+            Overview
+          </Link>
+        </div>
+        <div className="mx-4 mb-3 border-t border-sidebar-border" />
         {sections.map((section) => (
           <div key={section.title} className="mb-4">
             <p className="px-4 py-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60 select-none">

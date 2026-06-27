@@ -69,6 +69,7 @@ const cards = [
       { label: 'Buttons',             href: '/components/buttons',           icon: Box,               desc: 'Primary, secondary, ghost, split and destructive variants' },
       { label: 'Calendar',            href: '/components/calendar',          icon: Calendar,          desc: 'Date picker, week strip, time grid and range selection' },
       { label: 'Callout',             href: '/components/callout',           icon: AlertCircle,       desc: 'Info, success, warning and error inline banners' },
+      { label: 'Charts',              href: '/components/charts',            icon: BarChart2,         desc: 'Line, bar, stacked bar, area, donut and sparkline variants' },
       { label: 'Checkboxes & Radio',  href: '/components/checkboxes',        icon: CheckSquare,       desc: 'Form selection controls and groups' },
       { label: 'Code Block',          href: '/components/code-block',        icon: Code2,             desc: 'Syntax-styled code display with copy button' },
       { label: 'Drawer',              href: '/components/drawer',            icon: SlidersHorizontal, desc: 'Right, left and bottom sliding panels for detail views and filters' },
