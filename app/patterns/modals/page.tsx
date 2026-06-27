@@ -71,9 +71,9 @@ function ModalFooterFull({
 }) {
   // Cancel = Secondary: dark surface bg, foreground text
   // Confirm default = Primary: foreground bg, background text
-  // Confirm destructive = Danger: transparent bg, destructive text, destructive border on top edge
+  // Confirm destructive = solid bg-destructive, white text — matches the Delete button in ConfirmModal
   const confirmCls = variant === 'destructive'
-    ? 'bg-transparent text-destructive hover:bg-destructive/10 border-l border-destructive/30'
+    ? 'bg-destructive text-white hover:bg-destructive/90'
     : 'bg-foreground text-background hover:bg-foreground/90'
   return (
     <div className="flex border-t border-border rounded-b-lg overflow-hidden">
