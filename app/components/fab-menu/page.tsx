@@ -35,8 +35,8 @@ function PhoneFrame({ children }: { children: React.ReactNode }) {
       >
         {/* The phone shell */}
         <div
-          className="absolute inset-0 rounded-[13%] border-[3px] border-border bg-surface-1 shadow-2xl overflow-hidden"
-          style={{ boxShadow: '0 24px 60px rgba(0,0,0,0.6)' }}
+          className="absolute inset-0 border-[3px] border-border bg-surface-1 shadow-2xl overflow-hidden"
+          style={{ borderRadius: 44, boxShadow: '0 24px 60px rgba(0,0,0,0.6)' }}
         >
           {/* Status bar notch area */}
           <div className="flex items-center justify-between px-5 pt-3 pb-1 shrink-0">
@@ -195,6 +195,17 @@ function InlineSheet({
           {items.map(item => (
             <NavRow key={item.label} item={item} onClose={onClose} />
           ))}
+        </div>
+        {/* Close button — grey circle, same bottom-right position as FAB */}
+        <div className="absolute bottom-6 right-4">
+          <button
+            onClick={onClose}
+            aria-label="Close menu"
+            className="w-14 h-14 rounded-full bg-muted flex items-center justify-center active:scale-95 transition-all duration-150 touch-manipulation cursor-pointer"
+            style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.15)' }}
+          >
+            <X className="w-5 h-5 text-foreground" strokeWidth={2} />
+          </button>
         </div>
       </div>
     </>
