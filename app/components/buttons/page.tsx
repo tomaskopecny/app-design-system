@@ -49,7 +49,7 @@ export default function ButtonsPage() {
   return (
     <DSLayout
       title="Buttons"
-      description="Linear buttons are compact and purposeful. All variants share a 6px radius, 12px font, and a fixed height of ~28px. Size up to sm when needed for modals or empty states."
+      description="Buttons are compact and purposeful. All variants share a 6px radius, 12px font, and a fixed height of ~28px. Size up to sm when needed for modals or empty states."
     >
       {/* Variants */}
       <DSSection title="Variants" description="Four variants covering the full range of button hierarchy.">

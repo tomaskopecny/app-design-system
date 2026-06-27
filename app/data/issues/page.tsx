@@ -125,7 +125,7 @@ export default function IssuesPage() {
   return (
     <DSLayout
       title="Issue Rows"
-      description="The issue row is Linear's most fundamental data component. It packs ID, priority, status, title, labels, comments, branch, and assignee into a single scannable row."
+      description="The issue row is the most fundamental data component. It packs ID, priority, status, title, labels, comments, branch, and assignee into a single scannable row."
     >
       <DSSection
         title="Interactive issue list"

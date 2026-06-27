@@ -28,7 +28,7 @@ export default function InputsPage() {
   return (
     <DSLayout
       title="Inputs"
-      description="Linear inputs are low-profile — dark background, subtle border, no box-shadow on default state. Focus ring uses the --ring token for keyboard accessibility."
+      description="Inputs are low-profile — dark background, subtle border, no box-shadow on default state. Focus ring uses the --ring token for keyboard accessibility."
     >
       {/* Base input */}
       <DSSection title="Text input" description="Default and placeholder states.">

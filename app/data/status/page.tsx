@@ -39,7 +39,7 @@ export default function StatusPage() {
   return (
     <DSLayout
       title="Status & Priority"
-      description="Status and priority are the two most critical metadata fields in a Linear-style issue tracker. Each has a precise icon, color, and label — always used together as a pair."
+      description="Status and priority are the two most critical metadata fields in an issue tracker. Each has a precise icon, color, and label — always used together as a pair."
     >
       <DSSection
         title="Status icons"

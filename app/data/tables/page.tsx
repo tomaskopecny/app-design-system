@@ -72,7 +72,7 @@ export default function TablesPage() {
   return (
     <DSLayout
       title="Tables"
-      description="Data tables in Linear-style apps are compact, sortable, and row-selectable. Every column header is a button when sortable. Rows get a hover highlight and a checkbox on hover."
+      description="Data tables are compact, sortable, and row-selectable. Every column header is a button when sortable. Rows get a hover highlight and a checkbox on hover."
     >
       <DSSection
         title="Sortable data table"

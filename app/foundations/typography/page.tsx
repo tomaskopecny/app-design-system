@@ -6,7 +6,7 @@ const typeScale = [
   { name: 'Heading 1', size: '1.5rem', weight: '600', lineHeight: '1.25', tracking: '-0.02em', class: 'text-2xl font-semibold tracking-tight', sample: 'Build faster with AI workflows' },
   { name: 'Heading 2', size: '1.25rem', weight: '600', lineHeight: '1.3', tracking: '-0.015em', class: 'text-xl font-semibold tracking-tight', sample: 'Cycles & project planning' },
   { name: 'Heading 3', size: '1.125rem', weight: '600', lineHeight: '1.4', tracking: '-0.01em', class: 'text-lg font-semibold', sample: 'Issue tracking at scale' },
-  { name: 'Body Large', size: '0.9375rem', weight: '400', lineHeight: '1.6', tracking: '0', class: 'text-[15px] leading-relaxed', sample: 'Linear is purpose-built for modern product teams with AI at its core.' },
+  { name: 'Body Large', size: '0.9375rem', weight: '400', lineHeight: '1.6', tracking: '0', class: 'text-[15px] leading-relaxed', sample: 'App System is purpose-built for modern product teams with AI at its core.' },
   { name: 'Body', size: '0.875rem', weight: '400', lineHeight: '1.6', tracking: '0', class: 'text-sm leading-relaxed', sample: 'Assign, comment, and ship. Keyboard shortcuts for everything.' },
   { name: 'Body Small', size: '0.8125rem', weight: '400', lineHeight: '1.5', tracking: '0', class: 'text-[13px]', sample: 'Updated 3 minutes ago · ENG-2451' },
   { name: 'Caption', size: '0.75rem', weight: '400', lineHeight: '1.4', tracking: '0', class: 'text-xs text-muted-foreground', sample: 'In Progress · High Priority · Assigned to you' },
@@ -24,7 +24,7 @@ export default function TypographyPage() {
   return (
     <DSLayout
       title="Typography"
-      description="Linear uses Geist Sans for UI and Geist Mono for code. The scale is compact and purposeful — no decorative typefaces, no visual noise."
+      description="Geist Sans for UI and Geist Mono for code. The scale is compact and purposeful — no decorative typefaces, no visual noise."
     >
       {/* Fonts */}
       <DSSection

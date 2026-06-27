@@ -43,7 +43,7 @@ export default function MotionPage() {
   return (
     <DSLayout
       title="Motion & Animation"
-      description="Linear's motion is fast and purposeful — never decorative. Hover transitions use 100ms, entering elements use 150–200ms ease-out. The goal is to feel instant, not animated."
+      description="Motion is fast and purposeful — never decorative. Hover transitions use 100ms, entering elements use 150–200ms ease-out. The goal is to feel instant, not animated."
     >
       <DSSection title="Duration scale" description="All durations used in the system — shorter is almost always better.">
         <div className="rounded-md border border-border bg-surface-1 overflow-hidden">

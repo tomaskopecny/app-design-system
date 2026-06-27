@@ -143,7 +143,7 @@ export default function KanbanPage() {
       title="Kanban Cards"
       description="Board view cards show issue title, priority icon, ID, labels, assignee avatar, and optional sub-issue/comment counts. Hover reveals the action button."
     >
-      <DSSection title="Board view" description="4-column layout matching Linear's board view. Each column has a header with status dot, name, count, and add button.">
+      <DSSection title="Board view" description="4-column layout for the board view. Each column has a header with status dot, name, count, and add button.">
         <div className="grid grid-cols-4 gap-3 min-w-0 overflow-x-auto">
           {columns.map(col => (
             <KanbanColumn key={col.title} column={col} />

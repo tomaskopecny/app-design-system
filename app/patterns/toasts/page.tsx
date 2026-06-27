@@ -132,7 +132,7 @@ export default function ToastsPage() {
         </DSPreview>
       </DSSection>
 
-      <DSSection title="With action" description="Optional inline action link for undo patterns — Linear uses this for 'Undo archive' etc.">
+      <DSSection title="With action" description="Optional inline action link for undo patterns — e.g. 'Undo archive'.">
         <DSPreview code={`// Toast with action
 push({
   variant: 'success',

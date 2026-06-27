@@ -115,7 +115,7 @@ export default function CalloutPage() {
             Cycles now support custom date ranges. You can set start and end dates independently per team.
           </Callout>
           <Callout variant="success" title="Integration connected" dismissible>
-            GitHub is now syncing pull requests with your Linear issues automatically.
+            GitHub is now syncing pull requests with your issues automatically.
           </Callout>
         </div>
       </DSSection>

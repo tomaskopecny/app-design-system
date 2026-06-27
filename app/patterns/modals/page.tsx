@@ -316,7 +316,7 @@ export default function ModalsPage() {
   return (
     <DSLayout
       title="Modals"
-      description="Linear uses minimal modals with a blurred dark backdrop. Three categories: create forms, destructive confirmations, and informational alerts. All are dismissible by clicking outside or pressing ESC."
+      description="Minimal modals with a dark semi-transparent backdrop. Three categories: create forms, destructive confirmations, and informational alerts. All are dismissible by clicking outside or pressing ESC."
     >
       <DSSection
         title="Create modal"

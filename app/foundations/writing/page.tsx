@@ -55,7 +55,7 @@ export default function WritingPage() {
       <DSSection title="Capitalization" description="Use sentence case everywhere — only capitalize proper nouns and the first word of a sentence.">
         <div className="space-y-3">
           <Rule correct="Create new issue" wrong="Create New Issue" note="Sentence case for buttons, labels, navigation items, and headings." />
-          <Rule correct="Command palette" wrong="Command Palette" note="Title case only appears in product names (Linear, GitHub, Slack) and legal terms." />
+          <Rule correct="Command palette" wrong="Command Palette" note="Title case only appears in proper nouns (GitHub, Slack) and legal terms." />
           <Rule correct="Set due date" wrong="Set Due Date" note="Modal and dialog titles use sentence case." />
         </div>
       </DSSection>

@@ -102,7 +102,7 @@ export default function CheckboxesPage() {
   return (
     <DSLayout
       title="Checkboxes & Radio"
-      description="Custom-styled checkboxes and radios that match Linear's compact form aesthetic. All 14×14px, 3px radius for checkboxes, fully circular for radios."
+      description="Custom-styled checkboxes and radios with a compact form aesthetic. All 14×14px, 3px radius for checkboxes, fully circular for radios."
     >
       <DSSection title="Checkbox states" description="Default, checked, indeterminate, and disabled.">
         <DSPreview code={`<div role="checkbox" aria-checked={checked}

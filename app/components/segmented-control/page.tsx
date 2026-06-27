@@ -61,7 +61,7 @@ export default function SegmentedControlPage() {
       title="Segmented Control"
       description="A tightly grouped set of 2–5 mutually exclusive options that take immediate effect. Used for view mode switchers, filter toggles, and settings that change the current display."
     >
-      <DSSection title="View switcher" description="The primary Linear use case — switching between list, board, and timeline views.">
+      <DSSection title="View switcher" description="The primary use case — switching between list, board, and timeline views.">
         <DSPreview>
           <SegmentedControl
             value={view}

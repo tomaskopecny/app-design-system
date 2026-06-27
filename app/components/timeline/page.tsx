@@ -143,7 +143,7 @@ export default function TimelinePage() {
       title="Timeline / Activity Feed"
       description="A vertical chronological list of events — status changes, comments, assignments, and integrations. Used in issue detail panels and project history."
     >
-      <DSSection title="Activity feed" description="Full activity feed as seen in a Linear issue detail panel. Comments get a card; metadata events are compact rows.">
+      <DSSection title="Activity feed" description="Full activity feed as seen in an issue detail panel. Comments get a card; metadata events are compact rows.">
         <div className="max-w-lg">
           <ActivityTimeline events={EVENTS} />
         </div>
@@ -155,7 +155,7 @@ export default function TimelinePage() {
         </div>
       </DSSection>
 
-      <DSSection title="Horizontal stage progress" description="Linear pipeline of named stages with completed / pending states.">
+      <DSSection title="Horizontal stage progress" description="Pipeline of named stages with completed / pending states.">
         <DSPreview>
           <div className="w-full max-w-lg">
             <StageTimeline />

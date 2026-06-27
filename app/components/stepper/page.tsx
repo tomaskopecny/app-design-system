@@ -113,7 +113,7 @@ const SETUP_STEPS = [
 const ONBOARDING_STEPS = [
   { label: 'Create workspace', description: 'Choose a name and URL slug for your team.' },
   { label: 'Invite members', description: 'Add your teammates by email or share an invite link.' },
-  { label: 'Connect GitHub', description: 'Sync pull requests with Linear issues automatically.' },
+  { label: 'Connect GitHub', description: 'Sync pull requests with issues automatically.' },
   { label: 'Go live', description: 'Review your settings and start tracking issues.' },
 ]
 

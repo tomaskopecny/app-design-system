@@ -54,7 +54,7 @@ export default function LinkPage() {
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground/60 font-semibold">Default</p>
             <p className="text-xs text-muted-foreground leading-relaxed">
               You can learn more about cycles in the{' '}
-              <DSLink href="#">Linear documentation</DSLink>.
+              <DSLink href="#">Documentation</DSLink>.
               {' '}See also <DSLink href="#">keyboard shortcuts</DSLink> for quick navigation.
             </p>
           </div>
@@ -86,8 +86,8 @@ export default function LinkPage() {
 
       <DSSection title="External links" description="Automatically appends an external icon and sets target=_blank + rel=noopener.">
         <DSPreview className="[&>div]:flex-col [&>div]:items-start [&>div]:gap-3">
-          <DSLink href="https://linear.app" external>Linear.app</DSLink>
-          <DSLink href="https://github.com/linear" external>GitHub repository</DSLink>
+          <DSLink href="https://vercel.com" external>Vercel.com</DSLink>
+          <DSLink href="https://github.com" external>GitHub repository</DSLink>
           <DSLink href="#" variant="subtle" external>View on GitHub</DSLink>
         </DSPreview>
       </DSSection>
