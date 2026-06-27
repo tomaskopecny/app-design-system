@@ -65,16 +65,16 @@ function Callout({
   const v = VARIANTS[variant]
   return (
     <div className={`flex gap-3 px-4 py-3 rounded-md border ${v.bg} ${v.border}`} role="alert">
-      <v.Icon className={`w-4 h-4 mt-0.5 shrink-0 ${v.icon}`} aria-hidden="true" />
+      <v.Icon className={`w-4 h-4 shrink-0 ${v.icon}`} aria-hidden="true" />
       <div className="flex-1 min-w-0">
         {title && <p className="text-xs font-semibold text-foreground">{title}</p>}
-        <p className={`text-xs leading-relaxed ${title ? 'text-muted-foreground mt-0.5' : v.text}`}>{children}</p>
+        <p className={`text-xs leading-relaxed ${title ? 'text-muted-foreground' : v.text}`}>{children}</p>
       </div>
       {dismissible && (
         <button
           onClick={() => setDismissed(true)}
           aria-label="Dismiss"
-          className="shrink-0 w-5 h-5 flex items-center justify-center rounded-sm text-muted-foreground hover:text-foreground hover:bg-accent/60 transition-colors mt-0.5"
+          className="shrink-0 w-5 h-5 flex items-center justify-center rounded-sm text-muted-foreground hover:text-foreground hover:bg-accent/60 transition-colors"
         >
           <X className="w-3 h-3" aria-hidden="true" />
         </button>
