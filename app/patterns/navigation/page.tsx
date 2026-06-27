@@ -5,7 +5,8 @@ import { DSSection } from '@/components/ds/ds-section'
 import { useState } from 'react'
 import {
   Hash, Layers, GitBranch, FileText, Settings, Bell, ChevronDown,
-  ChevronRight, Plus, Circle, Inbox, BarChart2, Users, Zap,
+  ChevronRight, Plus, Circle, Inbox, BarChart2, Users, Zap, Menu, X,
+  ArrowRight, Cpu, GitPullRequest, BarChart, Puzzle, Lightbulb, Target,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -235,6 +236,224 @@ function TabBarDemo() {
   )
 }
 
+// ---------------------------------------------------------------------------
+// Marketing top nav — Linear-style
+// ---------------------------------------------------------------------------
+
+const MEGA_ITEMS = [
+  { label: 'Intake',        desc: 'Make your product operations self-driving',     icon: Lightbulb },
+  { label: 'Plan',          desc: 'Plan and navigate from idea to launch',          icon: Target },
+  { label: 'Build',         desc: 'Move work forward across teams and agents',      icon: Cpu },
+  { label: 'Diffs',         desc: 'Make code review effortless',                    icon: GitPullRequest },
+  { label: 'Monitor',       desc: 'Understand progress at scale',                   icon: BarChart },
+  { label: 'Integrations',  desc: 'Collaborate across tools',                       icon: Puzzle },
+]
+
+const TOP_NAV_LINKS = ['Product', 'Resources', 'Customers', 'Pricing', 'Now', 'Contact']
+
+function MarketingNav({ align = 'right' }: { align?: 'left' | 'center' | 'right' }) {
+  const [activeMenu, setActiveMenu] = useState<string | null>(null)
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  const Logo = () => (
+    <div className="flex items-center gap-2 shrink-0 select-none">
+      <div className="w-5 h-5 rounded-[4px] bg-foreground flex items-center justify-center">
+        <span className="text-[9px] font-black text-background leading-none">L</span>
+      </div>
+      <span className="text-sm font-semibold text-foreground">Linear</span>
+    </div>
+  )
+
+  const NavLinks = ({ className = '' }: { className?: string }) => (
+    <div className={cn('flex items-center gap-0.5', className)}>
+      {TOP_NAV_LINKS.map((link) => {
+        const hasMega = link === 'Product'
+        const isActive = link === 'Product'
+        return (
+          <button
+            key={link}
+            onMouseEnter={() => hasMega ? setActiveMenu(link) : setActiveMenu(null)}
+            onMouseLeave={() => setActiveMenu(null)}
+            className={cn(
+              'relative flex items-center gap-0.5 px-3 py-1.5 text-[13px] rounded-full transition-colors cursor-pointer',
+              isActive
+                ? 'bg-surface-3 text-foreground font-medium'
+                : 'text-muted-foreground hover:text-foreground'
+            )}
+          >
+            {link}
+            {hasMega && <ChevronDown className="w-3 h-3 opacity-60" />}
+
+            {/* Mega menu */}
+            {hasMega && activeMenu === link && (
+              <div
+                className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[560px] bg-popover border border-border rounded-xl shadow-xl overflow-hidden z-50"
+                onMouseEnter={() => setActiveMenu(link)}
+                onMouseLeave={() => setActiveMenu(null)}
+              >
+                <div className="grid grid-cols-3 gap-px bg-border/30 p-1">
+                  {MEGA_ITEMS.map(({ label, desc, icon: Icon }) => (
+                    <button
+                      key={label}
+                      className="flex flex-col gap-1 px-4 py-3.5 rounded-lg bg-popover hover:bg-accent/60 text-left transition-colors cursor-pointer"
+                    >
+                      <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+                        <Icon className="w-3 h-3" />
+                        {label}
+                      </span>
+                      <span className="text-[13px] font-medium text-foreground leading-snug">{desc}</span>
+                    </button>
+                  ))}
+                </div>
+                {/* Footer strip */}
+                <div className="flex items-center justify-between px-5 py-3 border-t border-border bg-surface-1">
+                  <span className="text-[12px] text-muted-foreground">
+                    <span className="text-foreground font-medium">New:</span> Agent assisted project updates
+                  </span>
+                  <button className="text-[12px] font-medium text-[var(--blue-400)] hover:text-[var(--blue-300)] flex items-center gap-1 cursor-pointer">
+                    Changelog <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </button>
+        )
+      })}
+    </div>
+  )
+
+  const AuthButtons = ({ className = '' }: { className?: string }) => (
+    <div className={cn('flex items-center gap-2', className)}>
+      <button className="text-[13px] text-muted-foreground hover:text-foreground transition-colors cursor-pointer px-2">
+        Log in
+      </button>
+      <button className="px-3.5 py-1.5 text-[13px] font-medium rounded-full bg-foreground text-background hover:bg-foreground/90 transition-colors cursor-pointer">
+        Sign up
+      </button>
+    </div>
+  )
+
+  return (
+    <div className="rounded-xl border border-border overflow-hidden bg-background">
+      {/* Desktop nav */}
+      <div className="hidden sm:flex items-center gap-4 px-5 py-3 relative">
+        {/* Left-aligned */}
+        {align === 'left' && (
+          <>
+            <Logo />
+            <NavLinks className="ml-2" />
+            <div className="flex-1" />
+            <AuthButtons />
+          </>
+        )}
+
+        {/* Center-aligned */}
+        {align === 'center' && (
+          <>
+            <Logo />
+            <div className="flex-1" />
+            <NavLinks />
+            <div className="flex-1" />
+            <AuthButtons />
+          </>
+        )}
+
+        {/* Right-aligned — logo right */}
+        {align === 'right' && (
+          <>
+            <AuthButtons />
+            <div className="flex-1" />
+            <NavLinks />
+            <div className="flex-1" />
+            <Logo />
+          </>
+        )}
+      </div>
+
+      {/* Mobile nav */}
+      <div className="flex sm:hidden items-center justify-between px-4 py-3">
+        <Logo />
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+          className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+        >
+          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      </div>
+
+      {/* Mobile drawer */}
+      {mobileOpen && (
+        <div className="sm:hidden border-t border-border bg-background divide-y divide-border">
+          {TOP_NAV_LINKS.map(link => (
+            <button
+              key={link}
+              className="w-full flex items-center justify-between px-4 py-3 text-[14px] text-foreground hover:bg-accent transition-colors cursor-pointer"
+            >
+              {link}
+              <ChevronRight className="w-4 h-4 text-muted-foreground/50" />
+            </button>
+          ))}
+          <div className="flex gap-3 px-4 py-4">
+            <button className="flex-1 py-2 text-sm text-center text-foreground border border-border rounded-md hover:bg-accent transition-colors cursor-pointer">
+              Log in
+            </button>
+            <button className="flex-1 py-2 text-sm text-center bg-foreground text-background rounded-md hover:bg-foreground/90 transition-colors cursor-pointer font-medium">
+              Sign up
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// Hamburger-only demo (forced narrow)
+function HamburgerDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="rounded-xl border border-border overflow-hidden bg-background max-w-xs">
+      <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center gap-2 select-none">
+          <div className="w-5 h-5 rounded-[4px] bg-foreground flex items-center justify-center">
+            <span className="text-[9px] font-black text-background leading-none">L</span>
+          </div>
+          <span className="text-sm font-semibold text-foreground">Linear</span>
+        </div>
+        <button
+          onClick={() => setOpen(!open)}
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+        >
+          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      </div>
+
+      {open && (
+        <div className="border-t border-border divide-y divide-border">
+          {TOP_NAV_LINKS.map(link => (
+            <button
+              key={link}
+              className="w-full flex items-center justify-between px-4 py-3 text-[14px] text-foreground hover:bg-accent transition-colors cursor-pointer"
+            >
+              {link}
+              <ChevronRight className="w-4 h-4 text-muted-foreground/50" />
+            </button>
+          ))}
+          <div className="flex gap-3 px-4 py-4">
+            <button className="flex-1 py-2 text-sm text-center text-foreground border border-border rounded-md hover:bg-accent transition-colors cursor-pointer">
+              Log in
+            </button>
+            <button className="flex-1 py-2 text-sm text-center bg-foreground text-background rounded-md hover:bg-foreground/90 transition-colors cursor-pointer font-medium">
+              Sign up
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function NavigationPage() {
   return (
     <DSLayout
@@ -260,6 +479,34 @@ export default function NavigationPage() {
         description="Secondary navigation within a section. Active tab has a 2px bottom border in --foreground. Click tabs to switch."
       >
         <TabBarDemo />
+      </DSSection>
+
+      <DSSection
+        title="Marketing top nav — links left"
+        description="Logo and nav links left-aligned, auth CTAs pushed to the right. Hover 'Product' to reveal the mega-menu with a 3-column grid of sub-items and a changelog footer strip. On mobile, the nav collapses to a hamburger."
+      >
+        <MarketingNav align="left" />
+      </DSSection>
+
+      <DSSection
+        title="Marketing top nav — links center"
+        description="Logo anchored left, nav links centered in the remaining space, auth CTAs right. The most balanced layout for marketing sites with 5–7 top-level links."
+      >
+        <MarketingNav align="center" />
+      </DSSection>
+
+      <DSSection
+        title="Marketing top nav — links right"
+        description="Auth CTAs left, nav links right-of-center, logo anchored far right. Uncommon but used in right-to-left markets or for distinct brand emphasis."
+      >
+        <MarketingNav align="right" />
+      </DSSection>
+
+      <DSSection
+        title="Hamburger / mobile nav"
+        description="Collapsed to a single icon button at narrow viewports. Clicking opens a full-width stacked link list with Log in and Sign up CTAs at the bottom."
+      >
+        <HamburgerDemo />
       </DSSection>
 
       <DSSection title="Sidebar spec">
