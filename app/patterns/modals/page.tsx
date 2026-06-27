@@ -55,6 +55,92 @@ function ModalFooter({ children }: { children: React.ReactNode }) {
   )
 }
 
+// Full-width split footer — two buttons side-by-side, flush to modal edges
+function ModalFooterFull({
+  cancelLabel = 'Cancel',
+  confirmLabel = 'Confirm',
+  onCancel,
+  onConfirm,
+  variant = 'default',
+}: {
+  cancelLabel?: string
+  confirmLabel?: string
+  onCancel: () => void
+  onConfirm: () => void
+  variant?: 'default' | 'destructive'
+}) {
+  const confirmCls = variant === 'destructive'
+    ? 'bg-destructive text-white hover:bg-destructive/90'
+    : 'bg-[var(--green-700)] text-white hover:bg-[var(--green-600)]'
+  return (
+    <div className="flex border-t border-border rounded-b-lg overflow-hidden">
+      <button
+        onClick={onCancel}
+        className="flex-1 py-3.5 text-sm font-medium text-muted-foreground bg-surface-1 hover:bg-surface-2 transition-colors cursor-pointer"
+      >
+        {cancelLabel}
+      </button>
+      <div className="w-px bg-border shrink-0" />
+      <button
+        onClick={onConfirm}
+        className={`flex-1 py-3.5 text-sm font-medium transition-colors cursor-pointer ${confirmCls}`}
+      >
+        {confirmLabel}
+      </button>
+    </div>
+  )
+}
+
+function PermissionModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  return (
+    <Modal open={open} onClose={onClose} width="max-w-sm">
+      <div className="px-5 pt-5 pb-5 space-y-3">
+        <h2 className="text-base font-semibold text-foreground">Missing permission</h2>
+        <div className="flex items-start gap-3 px-4 py-3 rounded-md bg-[var(--yellow-800)]/40 border border-[var(--yellow-700)]/50">
+          <AlertCircle className="w-4 h-4 text-[var(--yellow-400)] shrink-0 mt-0.5" />
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            To use this feature, please request access through your administrator or the Service Desk.
+          </p>
+        </div>
+      </div>
+      <ModalFooterFull
+        cancelLabel="Leave"
+        confirmLabel="Go to Service Desk"
+        onCancel={onClose}
+        onConfirm={onClose}
+        variant="default"
+      />
+    </Modal>
+  )
+}
+
+function DestructiveFullModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  return (
+    <Modal open={open} onClose={onClose} width="max-w-sm">
+      <div className="px-5 pt-5 pb-5 space-y-3">
+        <div className="flex items-start gap-3">
+          <div className="w-8 h-8 rounded-full bg-destructive/15 flex items-center justify-center shrink-0">
+            <Trash2 className="w-4 h-4 text-destructive" />
+          </div>
+          <div>
+            <h2 className="text-sm font-semibold text-foreground">Delete project</h2>
+            <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+              All issues and data will be permanently removed. This cannot be undone.
+            </p>
+          </div>
+        </div>
+      </div>
+      <ModalFooterFull
+        cancelLabel="Cancel"
+        confirmLabel="Delete project"
+        onCancel={onClose}
+        onConfirm={onClose}
+        variant="destructive"
+      />
+    </Modal>
+  )
+}
+
 function CreateIssueModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [title, setTitle] = useState('')
   const [priority, setPriority] = useState('medium')
@@ -191,6 +277,8 @@ export default function ModalsPage() {
   const [createOpen, setCreateOpen] = useState(false)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [alertOpen, setAlertOpen] = useState(false)
+  const [permissionOpen, setPermissionOpen] = useState(false)
+  const [destructiveFullOpen, setDestructiveFullOpen] = useState(false)
 
   return (
     <DSLayout
@@ -244,6 +332,30 @@ export default function ModalsPage() {
           </button>
         </div>
         <AlertModal open={alertOpen} onClose={() => setAlertOpen(false)} />
+      </DSSection>
+
+      <DSSection
+        title="Full-width split footer"
+        description="Two equal-width buttons flush to the modal's bottom edge, separated by a vertical divider. No footer padding — buttons stretch wall-to-wall and inherit the modal's bottom border-radius. Use for two-option decisions where both actions carry equal visual weight."
+      >
+        <div className="p-6 bg-surface-1 rounded-md border border-border flex flex-wrap gap-3">
+          <button
+            onClick={() => setPermissionOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-surface-2 border border-border text-foreground hover:bg-surface-3 transition-colors cursor-pointer"
+          >
+            <AlertCircle className="w-3.5 h-3.5 text-[var(--yellow-400)]" />
+            Permission modal
+          </button>
+          <button
+            onClick={() => setDestructiveFullOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md text-destructive border border-destructive/30 hover:bg-destructive/10 transition-colors cursor-pointer"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            Destructive modal
+          </button>
+        </div>
+        <PermissionModal open={permissionOpen} onClose={() => setPermissionOpen(false)} />
+        <DestructiveFullModal open={destructiveFullOpen} onClose={() => setDestructiveFullOpen(false)} />
       </DSSection>
 
       <DSSection title="Modal anatomy">
