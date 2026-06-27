@@ -30,7 +30,7 @@ function ToastItem({ toast, onDismiss }: { toast: Toast; onDismiss: (id: string)
       <Icon className={`w-4 h-4 shrink-0 ${iconColor} ${toast.variant === 'loading' ? 'animate-spin' : ''}`} />
       <div className="flex-1 min-w-0">
         <p className="text-xs font-medium text-foreground">{toast.message}</p>
-        {toast.description && <p className="text-[11px] text-muted-foreground mt-0.5">{toast.description}</p>}
+        {toast.description && <p className="text-[11px] text-muted-foreground">{toast.description}</p>}
         {toast.action && (
           <button onClick={toast.action.onClick} className="mt-1.5 text-[11px] text-foreground underline underline-offset-2 hover:no-underline cursor-pointer">
             {toast.action.label}
@@ -82,10 +82,10 @@ export default function ToastsPage() {
         <div className="flex flex-col gap-2">
           {(Object.entries(variantConfig) as [ToastVariant, typeof variantConfig[ToastVariant]][]).map(([variant, { icon: Icon, iconColor, border }]) => (
             <div key={variant} className={`flex items-start gap-3 w-80 bg-popover border ${border} rounded-md px-3 py-2.5 shadow-sm`}>
-              <Icon className={`w-4 h-4 shrink-0 mt-0.5 ${iconColor} ${variant === 'loading' ? 'animate-spin' : ''}`} />
+              <Icon className={`w-4 h-4 shrink-0 ${iconColor} ${variant === 'loading' ? 'animate-spin' : ''}`} />
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-medium text-foreground capitalize">{variant} toast</p>
-                <p className="text-[11px] text-muted-foreground mt-0.5">This is a {variant} message.</p>
+                <p className="text-[11px] text-muted-foreground">This is a {variant} message.</p>
               </div>
               <button className="w-4 h-4 flex items-center justify-center rounded text-muted-foreground">
                 <X className="w-3 h-3" />
@@ -141,7 +141,7 @@ push({
 })`}>
           <div className="flex flex-col gap-2">
             <div className="flex items-start gap-3 w-80 bg-popover border border-status-done/20 rounded-md px-3 py-2.5 shadow-sm">
-              <CheckCircle2 className="w-4 h-4 text-status-done shrink-0 mt-0.5" />
+              <CheckCircle2 className="w-4 h-4 text-status-done shrink-0" />
               <div className="flex-1">
                 <p className="text-xs font-medium text-foreground">Issue archived</p>
                 <button className="mt-1.5 text-[11px] text-foreground underline underline-offset-2 hover:no-underline cursor-pointer">Undo</button>
