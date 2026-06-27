@@ -69,14 +69,17 @@ function ModalFooterFull({
   onConfirm: () => void
   variant?: 'default' | 'destructive'
 }) {
+  // Cancel = Secondary: dark surface bg, foreground text
+  // Confirm default = Primary: foreground bg, background text
+  // Confirm destructive = Danger: transparent bg, destructive text, destructive border on top edge
   const confirmCls = variant === 'destructive'
-    ? 'bg-destructive text-white hover:bg-destructive/90'
-    : 'bg-[var(--green-700)] text-white hover:bg-[var(--green-600)]'
+    ? 'bg-transparent text-destructive hover:bg-destructive/10 border-l border-destructive/30'
+    : 'bg-foreground text-background hover:bg-foreground/90'
   return (
     <div className="flex border-t border-border rounded-b-lg overflow-hidden">
       <button
         onClick={onCancel}
-        className="flex-1 py-3.5 text-sm font-medium text-muted-foreground bg-surface-1 hover:bg-surface-2 transition-colors cursor-pointer"
+        className="flex-1 py-3.5 text-sm font-medium text-foreground bg-surface-2 hover:bg-surface-3 transition-colors cursor-pointer"
       >
         {cancelLabel}
       </button>
@@ -241,17 +244,15 @@ function CreateIssueModal({ open, onClose }: { open: boolean; onClose: () => voi
 function ConfirmModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
     <Modal open={open} onClose={onClose} width="max-w-sm">
-      <div className="px-5 pt-5 pb-4 space-y-3">
+      <ModalHeader title="Delete issue" onClose={onClose} />
+      <div className="px-5 py-4 space-y-3">
         <div className="flex items-start gap-3">
           <div className="w-8 h-8 rounded-full bg-destructive/15 flex items-center justify-center shrink-0">
             <Trash2 className="w-4 h-4 text-destructive" />
           </div>
-          <div>
-            <h2 className="text-sm font-semibold text-foreground">Delete issue</h2>
-            <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-              Are you sure you want to delete <span className="text-foreground font-medium">ENG-2451</span>? This action cannot be undone.
-            </p>
-          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Are you sure you want to delete <span className="text-foreground font-medium">ENG-2451</span>? This action cannot be undone.
+          </p>
         </div>
       </div>
       <ModalFooter>
@@ -275,17 +276,15 @@ function ConfirmModal({ open, onClose }: { open: boolean; onClose: () => void })
 function AlertModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
     <Modal open={open} onClose={onClose} width="max-w-sm">
-      <div className="px-5 pt-5 pb-4 space-y-3">
+      <ModalHeader title="Unsaved changes" onClose={onClose} />
+      <div className="px-5 py-4 space-y-3">
         <div className="flex items-start gap-3">
           <div className="w-8 h-8 rounded-full bg-[#D4A72C]/15 flex items-center justify-center shrink-0">
             <AlertCircle className="w-4 h-4 text-[#D4A72C]" />
           </div>
-          <div>
-            <h2 className="text-sm font-semibold text-foreground">Unsaved changes</h2>
-            <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-              You have unsaved changes. Do you want to save before leaving?
-            </p>
-          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            You have unsaved changes. Do you want to save before leaving?
+          </p>
         </div>
       </div>
       <ModalFooter>
