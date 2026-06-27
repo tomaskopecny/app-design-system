@@ -254,10 +254,7 @@ function WeekStrip() {
   const [anchor, setAnchor] = useState(startOfWeek(today))
   const [selected, setSelected] = useState<Date>(today)
 
-  // show 2 weeks (14 days)
   const days = Array.from({ length: 14 }, (_, i) => addDays(anchor, i))
-
-  // group by week
   const week1 = days.slice(0, 7)
   const week2 = days.slice(7, 14)
 
@@ -270,14 +267,12 @@ function WeekStrip() {
         aria-label={date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
         aria-pressed={isSel}
         aria-current={isNow ? 'date' : undefined}
-        className="flex flex-col items-center gap-1 px-2 py-2 cursor-pointer group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
+        className="flex flex-col items-center gap-1 px-1 sm:px-2 py-2 min-w-0 flex-1 cursor-pointer group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
       >
-        {/* WCAG: day label raised from /60 to full muted-foreground for Lc ≥ 30 */}
         <span className="text-[10px] font-medium text-muted-foreground group-hover:text-foreground/80 transition-colors select-none">
           {DAYS_SHORT[date.getDay()]}
         </span>
-        {/* rounded-md instead of rounded-full — consistent with system radius token for UI containers */}
-        <span className={`w-8 h-8 flex items-center justify-center rounded-md text-[13px] font-semibold transition-colors
+        <span className={`w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-md text-[12px] sm:text-[13px] font-semibold transition-colors
           ${isSel ? 'bg-foreground text-background' :
             isNow ? 'ring-1 ring-foreground/60 text-foreground' :
               'text-foreground group-hover:bg-accent'}`}
@@ -288,41 +283,35 @@ function WeekStrip() {
     )
   }
 
+  const navBtn = "px-1.5 sm:px-2 flex items-center justify-center self-stretch shrink-0 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-1 focus-visible:ring-ring"
+
   return (
-    <div className="flex bg-surface-1 border border-border rounded-md overflow-hidden w-full max-w-xl">
-      <button
-        onClick={() => setAnchor(addDays(anchor, -7))}
-        aria-label="Previous week"
-        className="px-2 flex items-center justify-center self-stretch shrink-0 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-1 focus-visible:ring-ring"
-      >
+    <div className="flex bg-surface-1 border border-border rounded-md overflow-hidden w-full">
+      {/* Prev */}
+      <button onClick={() => setAnchor(addDays(anchor, -7))} aria-label="Previous week" className={navBtn}>
         <ChevronLeft className="w-3.5 h-3.5" />
       </button>
 
-      {/* Week 1 */}
-      <div className="flex flex-1 divide-x divide-border/50">
+      {/* Week 1 — always visible */}
+      <div className="flex flex-1 min-w-0 divide-x divide-border/50">
         {week1.map(d => <DayCell key={d.getTime()} date={d} />)}
       </div>
 
-      {/* Divider */}
-      <div className="w-px self-stretch bg-border/80 shrink-0" />
-
-      {/* Week 2 */}
-      <div className="flex flex-1 divide-x divide-border/50">
+      {/* Week 2 — hidden on small screens */}
+      <div className="hidden sm:flex w-px self-stretch bg-border/80 shrink-0" />
+      <div className="hidden sm:flex flex-1 min-w-0 divide-x divide-border/50">
         {week2.map(d => <DayCell key={d.getTime()} date={d} />)}
       </div>
 
-      <button
-        onClick={() => setAnchor(addDays(anchor, 7))}
-        aria-label="Next week"
-        className="px-2 flex items-center justify-center self-stretch shrink-0 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-1 focus-visible:ring-ring"
-      >
+      {/* Next */}
+      <button onClick={() => setAnchor(addDays(anchor, 7))} aria-label="Next week" className={navBtn}>
         <ChevronRight className="w-3.5 h-3.5" />
       </button>
     </div>
   )
 }
 
-// ─── 4. Week time-grid (scheduler view) ────────────────────────────────���─────
+// ─── 4. Week time-grid (scheduler view) ───────���────────────────────────���─────
 
 const HOURS = Array.from({ length: 11 }, (_, i) => i + 8) // 8–18
 

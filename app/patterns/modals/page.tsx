@@ -55,6 +55,128 @@ function ModalFooter({ children }: { children: React.ReactNode }) {
   )
 }
 
+// Full-width split footer — two buttons side-by-side, flush to modal edges
+function ModalFooterFull({
+  cancelLabel = 'Cancel',
+  confirmLabel = 'Confirm',
+  onCancel,
+  onConfirm,
+  variant = 'default',
+}: {
+  cancelLabel?: string
+  confirmLabel?: string
+  onCancel: () => void
+  onConfirm: () => void
+  variant?: 'default' | 'destructive'
+}) {
+  // Cancel = Secondary: dark surface bg, foreground text
+  // Confirm default = Primary: foreground bg, background text
+  // Confirm destructive = solid bg-destructive, white text — matches the Delete button in ConfirmModal
+  const confirmCls = variant === 'destructive'
+    ? 'bg-destructive text-white hover:bg-destructive/90'
+    : 'bg-foreground text-background hover:bg-foreground/90'
+  return (
+    <div className="flex border-t border-border rounded-b-lg overflow-hidden">
+      <button
+        onClick={onCancel}
+        className="flex-1 py-3.5 text-sm font-medium text-foreground bg-surface-2 hover:bg-surface-3 transition-colors cursor-pointer"
+      >
+        {cancelLabel}
+      </button>
+      <div className="w-px bg-border shrink-0" />
+      <button
+        onClick={onConfirm}
+        className={`flex-1 py-3.5 text-sm font-medium transition-colors cursor-pointer ${confirmCls}`}
+      >
+        {confirmLabel}
+      </button>
+    </div>
+  )
+}
+
+function PermissionModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  return (
+    <Modal open={open} onClose={onClose} width="max-w-sm">
+      <ModalHeader title="Missing permission" onClose={onClose} />
+      <div className="px-5 py-4 space-y-3">
+        <div className="flex items-start gap-3 px-4 py-3 rounded-md bg-[var(--yellow-800)]/40 border border-[var(--yellow-700)]/50">
+          <AlertCircle className="w-4 h-4 text-[var(--yellow-400)] shrink-0 mt-0.5" />
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            To use this feature, please request access through your administrator or the Service Desk.
+          </p>
+        </div>
+      </div>
+      <ModalFooterFull
+        cancelLabel="Leave"
+        confirmLabel="Go to Service Desk"
+        onCancel={onClose}
+        onConfirm={onClose}
+        variant="default"
+      />
+    </Modal>
+  )
+}
+
+function DestructiveFullModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  return (
+    <Modal open={open} onClose={onClose} width="max-w-sm">
+      <ModalHeader title="Delete project" onClose={onClose} />
+      <div className="px-5 py-4 space-y-3">
+        <div className="flex items-start gap-3">
+          <div className="w-8 h-8 rounded-full bg-destructive/15 flex items-center justify-center shrink-0">
+            <Trash2 className="w-4 h-4 text-destructive" />
+          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            All issues and data will be permanently removed. This cannot be undone.
+          </p>
+        </div>
+      </div>
+      <ModalFooterFull
+        cancelLabel="Cancel"
+        confirmLabel="Delete project"
+        onCancel={onClose}
+        onConfirm={onClose}
+        variant="destructive"
+      />
+    </Modal>
+  )
+}
+
+function CreateFullModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [name, setName] = useState('')
+  const [desc, setDesc] = useState('')
+  return (
+    <Modal open={open} onClose={onClose} width="max-w-sm">
+      <ModalHeader title="New project" onClose={onClose} />
+      <div className="px-5 py-4 space-y-3">
+        <div className="space-y-2">
+          <input
+            autoFocus
+            value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder="Project name"
+            className="w-full px-3 py-2 text-sm rounded-md bg-surface-2 border border-border text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring"
+          />
+          <textarea
+            value={desc}
+            onChange={e => setDesc(e.target.value)}
+            placeholder="Description (optional)"
+            rows={3}
+            className="w-full px-3 py-2 text-sm rounded-md bg-surface-2 border border-border text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring resize-none"
+          />
+        </div>
+      </div>
+      <ModalFooterFull
+        cancelLabel="Cancel"
+        confirmLabel="Create project"
+        onCancel={onClose}
+        onConfirm={onClose}
+        variant="default"
+      />
+    </Modal>
+  )
+}
+
 function CreateIssueModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [title, setTitle] = useState('')
   const [priority, setPriority] = useState('medium')
@@ -122,17 +244,15 @@ function CreateIssueModal({ open, onClose }: { open: boolean; onClose: () => voi
 function ConfirmModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
     <Modal open={open} onClose={onClose} width="max-w-sm">
-      <div className="px-5 pt-5 pb-4 space-y-3">
+      <ModalHeader title="Delete issue" onClose={onClose} />
+      <div className="px-5 py-4 space-y-3">
         <div className="flex items-start gap-3">
           <div className="w-8 h-8 rounded-full bg-destructive/15 flex items-center justify-center shrink-0">
             <Trash2 className="w-4 h-4 text-destructive" />
           </div>
-          <div>
-            <h2 className="text-sm font-semibold text-foreground">Delete issue</h2>
-            <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-              Are you sure you want to delete <span className="text-foreground font-medium">ENG-2451</span>? This action cannot be undone.
-            </p>
-          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Are you sure you want to delete <span className="text-foreground font-medium">ENG-2451</span>? This action cannot be undone.
+          </p>
         </div>
       </div>
       <ModalFooter>
@@ -156,17 +276,15 @@ function ConfirmModal({ open, onClose }: { open: boolean; onClose: () => void })
 function AlertModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
     <Modal open={open} onClose={onClose} width="max-w-sm">
-      <div className="px-5 pt-5 pb-4 space-y-3">
+      <ModalHeader title="Unsaved changes" onClose={onClose} />
+      <div className="px-5 py-4 space-y-3">
         <div className="flex items-start gap-3">
           <div className="w-8 h-8 rounded-full bg-[#D4A72C]/15 flex items-center justify-center shrink-0">
             <AlertCircle className="w-4 h-4 text-[#D4A72C]" />
           </div>
-          <div>
-            <h2 className="text-sm font-semibold text-foreground">Unsaved changes</h2>
-            <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-              You have unsaved changes. Do you want to save before leaving?
-            </p>
-          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            You have unsaved changes. Do you want to save before leaving?
+          </p>
         </div>
       </div>
       <ModalFooter>
@@ -191,6 +309,9 @@ export default function ModalsPage() {
   const [createOpen, setCreateOpen] = useState(false)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [alertOpen, setAlertOpen] = useState(false)
+  const [permissionOpen, setPermissionOpen] = useState(false)
+  const [destructiveFullOpen, setDestructiveFullOpen] = useState(false)
+  const [createFullOpen, setCreateFullOpen] = useState(false)
 
   return (
     <DSLayout
@@ -244,6 +365,38 @@ export default function ModalsPage() {
           </button>
         </div>
         <AlertModal open={alertOpen} onClose={() => setAlertOpen(false)} />
+      </DSSection>
+
+      <DSSection
+        title="Full-width split footer"
+        description="Two equal-width buttons flush to the modal's bottom edge, separated by a vertical divider. No footer padding — buttons stretch wall-to-wall and inherit the modal's bottom border-radius. Use for two-option decisions where both actions carry equal visual weight."
+      >
+        <div className="p-6 bg-surface-1 rounded-md border border-border flex flex-wrap gap-3">
+          <button
+            onClick={() => setPermissionOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-surface-2 border border-border text-foreground hover:bg-surface-3 transition-colors cursor-pointer"
+          >
+            <AlertCircle className="w-3.5 h-3.5 text-[var(--yellow-400)]" />
+            Permission modal
+          </button>
+          <button
+            onClick={() => setDestructiveFullOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md text-destructive border border-destructive/30 hover:bg-destructive/10 transition-colors cursor-pointer"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            Destructive modal
+          </button>
+          <button
+            onClick={() => setCreateFullOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-surface-2 border border-border text-foreground hover:bg-surface-3 transition-colors cursor-pointer"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            Creation modal
+          </button>
+        </div>
+        <PermissionModal open={permissionOpen} onClose={() => setPermissionOpen(false)} />
+        <DestructiveFullModal open={destructiveFullOpen} onClose={() => setDestructiveFullOpen(false)} />
+        <CreateFullModal open={createFullOpen} onClose={() => setCreateFullOpen(false)} />
       </DSSection>
 
       <DSSection title="Modal anatomy">

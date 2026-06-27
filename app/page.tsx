@@ -71,6 +71,7 @@ const cards = [
       { label: 'Callout',             href: '/components/callout',           icon: AlertCircle,       desc: 'Info, success, warning and error inline banners' },
       { label: 'Checkboxes & Radio',  href: '/components/checkboxes',        icon: CheckSquare,       desc: 'Form selection controls and groups' },
       { label: 'Code Block',          href: '/components/code-block',        icon: Code2,             desc: 'Syntax-styled code display with copy button' },
+      { label: 'Drawer',              href: '/components/drawer',            icon: SlidersHorizontal, desc: 'Right, left and bottom sliding panels for detail views and filters' },
       { label: 'Empty States',        href: '/components/empty-states',      icon: FileX,             desc: 'Blank slate patterns with CTA guidance' },
       { label: 'Inputs',              href: '/components/inputs',            icon: FormInput,         desc: 'Text, search, char count, inline action and validation' },
       { label: 'Keyboard Shortcuts',  href: '/components/kbd',               icon: Keyboard,          desc: 'Kbd tags, shortcut hints and combo display' },

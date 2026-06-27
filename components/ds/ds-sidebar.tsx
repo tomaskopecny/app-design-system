@@ -73,6 +73,7 @@ const sections = [
       { label: 'Callout',             href: '/components/callout',           icon: AlertCircle },
       { label: 'Checkboxes & Radio',  href: '/components/checkboxes',        icon: CheckSquare },
       { label: 'Code Block',          href: '/components/code-block',        icon: Code2 },
+      { label: 'Drawer',              href: '/components/drawer',            icon: SlidersHorizontal },
       { label: 'Empty States',        href: '/components/empty-states',      icon: FileX },
       { label: 'Inputs',              href: '/components/inputs',            icon: FormInput },
       { label: 'Keyboard Shortcuts',  href: '/components/kbd',               icon: Keyboard },
@@ -128,9 +129,9 @@ export function DSSidebar() {
       {/* Logo / Title */}
       <div className="px-4 py-3.5 border-b border-sidebar-border flex items-center gap-2.5">
         <div className="w-5 h-5 rounded-[4px] bg-foreground flex items-center justify-center">
-          <span className="text-[9px] font-black text-background leading-none">L</span>
+          <span className="text-[9px] font-black text-background leading-none">A</span>
         </div>
-        <span className="text-sm font-medium text-foreground tracking-tight">Design System</span>
+        <span className="text-sm font-medium text-foreground tracking-tight">App System</span>
       </div>
 
       {/* Nav */}
@@ -165,7 +166,7 @@ export function DSSidebar() {
       {/* Bottom hint */}
       <div className="px-4 py-3 border-t border-sidebar-border">
         <p className="text-[11px] text-muted-foreground/50 leading-relaxed">
-          Inspired by Linear&apos;s UI
+          App System
         </p>
       </div>
     </aside>
