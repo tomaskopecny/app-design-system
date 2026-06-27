@@ -28,7 +28,7 @@ function Drawer({
 }) {
   if (!open) return null
 
-  const panelBase = 'fixed z-50 bg-popover/95 backdrop-blur-sm flex flex-col overflow-hidden'
+  const panelBase = 'fixed z-50 bg-popover flex flex-col overflow-hidden'
   const shadows: Record<DrawerSide, string> = {
     right:  'top-0 right-0 h-full border-l border-border',
     left:   'top-0 left-0 h-full border-r border-border',
@@ -38,7 +38,7 @@ function Drawer({
 
   return (
     <div className="fixed inset-0 z-50 flex" onClick={onClose} aria-modal="true" role="dialog">
-      <div className="absolute inset-0 bg-black/20 backdrop-blur-md" />
+      <div className="absolute inset-0 bg-black/20" />
       <div
         className={panelClass}
         style={{ boxShadow: side === 'right' ? '-4px 0 24px rgba(0,0,0,0.25)' : side === 'left' ? '4px 0 24px rgba(0,0,0,0.25)' : '0 -4px 24px rgba(0,0,0,0.25)' }}
