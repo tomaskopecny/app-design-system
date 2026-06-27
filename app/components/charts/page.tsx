@@ -60,11 +60,11 @@ const priorityDist = [
 ]
 
 const assigneeLoad = [
-  { name: 'Alex',   open: 8, _gap: 1, review: 3 },
-  { name: 'Jordan', open: 5, _gap: 1, review: 6 },
-  { name: 'Sam',    open: 11, _gap: 1, review: 2 },
-  { name: 'Taylor', open: 4, _gap: 1, review: 7 },
-  { name: 'Morgan', open: 7, _gap: 1, review: 4 },
+  { name: 'Alex',   open: 8, _gap: 0.3, review: 3 },
+  { name: 'Jordan', open: 5, _gap: 0.3, review: 6 },
+  { name: 'Sam',    open: 11, _gap: 0.3, review: 2 },
+  { name: 'Taylor', open: 4, _gap: 0.3, review: 7 },
+  { name: 'Morgan', open: 7, _gap: 0.3, review: 4 },
 ]
 
 // Sparkline mini data sets
@@ -171,7 +171,7 @@ export default function ChartsPage() {
               <XAxis dataKey="sprint" {...axisProps} />
               <YAxis {...axisProps} />
               <ChartTooltip content={<ChartTooltipContent />} />
-              <Bar dataKey="points" fill="var(--color-points)" radius={[3, 3, 0, 0]} />
+              <Bar dataKey="points" fill="var(--color-points)" />
             </BarChart>
           </ChartContainer>
         </div>
@@ -193,9 +193,9 @@ export default function ChartsPage() {
               <YAxis {...axisProps} />
               <ChartTooltip content={<ChartTooltipContent hideLabel />} />
               <ChartLegend content={<ChartLegendContent />} />
-              <Bar dataKey="open"    fill="var(--color-open)"           stackId="a" radius={[0, 0, 3, 3]} />
-              <Bar dataKey="_gap"    fill="var(--background)"           stackId="a" radius={0} legendType="none" tooltipType="none" />
-              <Bar dataKey="review"  fill="var(--color-review)"         stackId="a" radius={[3, 3, 0, 0]} />
+              <Bar dataKey="open"   fill="var(--color-open)"   stackId="a" />
+              <Bar dataKey="_gap"   fill="var(--background)"  stackId="a" legendType="none" tooltipType="none" />
+              <Bar dataKey="review" fill="var(--color-review)" stackId="a" />
             </BarChart>
           </ChartContainer>
         </div>
