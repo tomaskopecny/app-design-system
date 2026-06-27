@@ -170,7 +170,7 @@ export default function SelectsPage() {
   return (
     <DSLayout
       title="Selects & Dropdowns"
-      description="Linear uses fully custom dropdowns — no native <select>. They are compact, keyboard-navigable, and always positioned with a 4px gap below the trigger."
+      description="Fully custom dropdowns — no native <select>. They are compact, keyboard-navigable, and always positioned with a 4px gap below the trigger."
     >
       <DSSection title="Single select" description="Click to open. Icon and check-mark reinforce current selection.">
         <div className="rounded-md border border-border overflow-hidden">

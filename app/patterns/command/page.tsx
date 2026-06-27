@@ -178,7 +178,7 @@ export default function CommandPage() {
   return (
     <DSLayout
       title="Command Palette"
-      description="The command palette (⌘K) is Linear's primary power-user surface. It provides keyboard-first access to every action in the product via a fuzzy-search overlay."
+      description="The command palette (⌘K) is the primary power-user surface. It provides keyboard-first access to every action in the product via a fuzzy-search overlay."
     >
       <DSSection
         title="Interactive demo"

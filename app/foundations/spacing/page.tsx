@@ -36,7 +36,7 @@ export default function SpacingPage() {
   return (
     <DSLayout
       title="Spacing"
-      description="All spacing uses the Tailwind 4px-base scale. Linear's UI is dense — prefer smaller steps (1–6) for component internals and larger ones (8–16) for layout sections."
+      description="All spacing uses the Tailwind 4px-base scale. This UI is dense — prefer smaller steps (1–6) for component internals and larger ones (8–16) for layout sections."
     >
       <DSSection
         title="Visual scale"
@@ -68,7 +68,7 @@ export default function SpacingPage() {
 
       <DSSection
         title="Usage guide"
-        description="Recommended spacing values for common UI contexts in Linear-style products."
+        description="Recommended spacing values for common UI contexts in product UIs."
       >
         <div className="rounded-md border border-border overflow-hidden">
           <div className="grid grid-cols-[220px_200px_1fr] gap-4 px-4 py-2.5 bg-surface-2 border-b border-border">
@@ -91,7 +91,7 @@ export default function SpacingPage() {
       <DSSection title="Principles">
         <div className="grid grid-cols-3 gap-3">
           {[
-            ['Dense by default', 'Linear is a tool app, not a marketing site. Use compact spacing (py-1.5 for rows, p-4 for cards) as your baseline.'],
+            ['Dense by default', 'This is a tool app, not a marketing site. Use compact spacing (py-1.5 for rows, p-4 for cards) as your baseline.'],
             ['Consistent scale only', 'Never use arbitrary pixel values. Every spacing value must come from the 4px scale (p-[13px] is banned).'],
             ['Hierarchy through gaps', 'Increase gap to signal separation of concern. Items in the same group: gap-1 or gap-2. Separate sections: gap-6+.'],
           ].map(([title, body]) => (

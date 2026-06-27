@@ -35,7 +35,7 @@ export default function TooltipsPage() {
   return (
     <DSLayout
       title="Tooltips"
-      description="Tooltips are small, high-contrast overlays that appear on hover. Linear uses dark (--foreground) fills so they stand out on the near-black UI."
+      description="Tooltips are small, high-contrast overlays that appear on hover. Dark (--foreground) fills so they stand out on the near-black UI."
     >
       <DSSection title="Default tooltip" description="Hover any element below to see the tooltip.">
         <div className="p-6 bg-surface-1 flex flex-wrap gap-4 items-center rounded-md border border-border">

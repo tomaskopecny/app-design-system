@@ -96,7 +96,7 @@ const cards = [
     items: [
       { label: 'Cycle Cards',       href: '/data/cycles',   icon: Columns3,        desc: 'Sprint progress cards with assignee avatars' },
       { label: 'Grouping Headers',  href: '/data/grouping', icon: List,            desc: 'Sticky section headers for issue lists' },
-      { label: 'Issue Rows',        href: '/data/issues',   icon: List,            desc: 'Linear-style issue list items with states' },
+      { label: 'Issue Rows',        href: '/data/issues',   icon: List,            desc: 'Issue list items with priority, status and assignee' },
       { label: 'Kanban Cards',      href: '/data/kanban',   icon: Kanban,          desc: 'Board view cards across status columns' },
       { label: 'Roadmap / Gantt',   href: '/data/roadmap',  icon: GanttChartSquare,desc: 'Timeline bars, milestones and today marker' },
       { label: 'Status & Priority', href: '/data/status',   icon: Circle,          desc: 'Status icons and priority indicators' },
@@ -131,13 +131,13 @@ export default function HomePage() {
             <div className="w-6 h-6 rounded-[5px] bg-foreground flex items-center justify-center">
               <span className="text-[11px] font-black text-background leading-none">L</span>
             </div>
-            <span className="text-xs text-muted-foreground font-medium uppercase tracking-widest">Linear Design System</span>
+            <span className="text-xs text-muted-foreground font-medium uppercase tracking-widest">App System</span>
           </div>
           <h1 className="text-3xl font-semibold text-foreground tracking-tight text-balance">
-            Build with Linear&apos;s design language
+            Build with App System&apos;s design language
           </h1>
           <p className="mt-3 text-sm text-muted-foreground leading-relaxed max-w-xl">
-            A complete design system inspired by Linear&apos;s dark, minimal, keyboard-first UI.
+            A complete dark, minimal, keyboard-first design system.
             Every token, component, and pattern you need to build consistent product UIs.
           </p>
           <div className="mt-6 flex items-center gap-3">
@@ -190,7 +190,7 @@ export default function HomePage() {
         {/* Footer */}
         <div className="px-8 py-6 border-t border-border mt-4">
           <p className="text-xs text-muted-foreground/50">
-            Inspired by <span className="text-muted-foreground">Linear</span> — the system for modern product development.
+            App System — the design language for modern product development.
           </p>
         </div>
       </main>

@@ -65,7 +65,7 @@ function ToggleRow({
   onChange: () => void
 }) {
   return (
-    // Linear design refresh: separators should be "felt not seen" — use lower-contrast line token
+    // Separators should be "felt not seen" — use lower-contrast line token
     <div className="flex items-center justify-between gap-6 py-3 border-b border-line last:border-b-0">
       <div className="flex flex-col gap-0.5">
         <span className="text-xs font-medium text-foreground">{label}</span>
@@ -150,7 +150,7 @@ export default function TogglesPage() {
 
       <DSSection
         title="Settings list"
-        description="Toggles paired with labels in a settings list — the primary usage in Linear's preferences panels. Row separators use the lower-contrast line token so structure is felt, not seen."
+        description="Toggles paired with labels in a settings list — the primary usage in preferences panels. Row separators use the lower-contrast line token so structure is felt, not seen."
       >
         <div className="rounded-md border border-border bg-surface-1 px-4 py-1 max-w-md">
           <ToggleRow
@@ -185,7 +185,7 @@ export default function TogglesPage() {
         description="Section headings should recede visually — they orient without competing for attention. Use small uppercase muted text, not a full heading weight."
       >
         <div className="rounded-md border border-border bg-surface-1 overflow-hidden max-w-md">
-          {/* Linear refresh: section heading dims further — navigation elements recede */}
+          
           <div className="px-4 py-2 border-b border-line">
             <span className="text-[10px] font-medium uppercase tracking-[0.1em] text-muted-foreground/50">
               Notifications

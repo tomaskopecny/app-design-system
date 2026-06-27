@@ -37,7 +37,7 @@ function SidebarDemo() {
           <div className="w-5 h-5 rounded-[4px] bg-foreground flex items-center justify-center shrink-0">
             <span className="text-[9px] font-black text-background leading-none">L</span>
           </div>
-          <span className="text-sm font-medium text-foreground truncate flex-1 text-left">Linear Corp</span>
+          <span className="text-sm font-medium text-foreground truncate flex-1 text-left">App Corp</span>
           <ChevronDown className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
         </button>
 
@@ -145,7 +145,7 @@ function SidebarDemo() {
         {/* Top bar */}
         <div className="flex items-center gap-3 px-4 py-2.5 border-b border-border">
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <span>Linear Corp</span>
+            <span>App Corp</span>
             <ChevronRight className="w-3 h-3" />
             <span className="text-foreground font-medium capitalize">{activeItem.replace('-', ' ')}</span>
           </div>
@@ -171,7 +171,7 @@ function SidebarDemo() {
 }
 
 function BreadcrumbDemo() {
-  const crumbs = ['Linear Corp', 'Engineering', 'Issues', 'ENG-2451']
+  const crumbs = ['App Corp', 'Engineering', 'Issues', 'ENG-2451']
   return (
     <div className="flex items-center gap-1 px-4 py-2.5 border border-border rounded-md bg-surface-1">
       {crumbs.map((crumb, i) => (
@@ -457,7 +457,7 @@ export default function NavigationPage() {
   return (
     <DSLayout
       title="Navigation"
-      description="Linear uses a fixed left sidebar for primary navigation, a top breadcrumb bar for location context, and a tab bar for secondary navigation within a section."
+      description="Fixed left sidebar for primary navigation, a top breadcrumb bar for location context, and a tab bar for secondary navigation within a section."
     >
       <DSSection
         title="Sidebar"

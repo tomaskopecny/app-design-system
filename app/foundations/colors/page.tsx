@@ -118,7 +118,7 @@ export default function ColorsPage() {
   return (
     <DSLayout
       title="Colors"
-      description="The Linear color system is built on a near-black base with carefully calibrated neutrals and precise semantic tokens for status, priority, and labels."
+      description="The color system is built on a near-black base with carefully calibrated neutrals and precise semantic tokens for status, priority, and labels."
     >
       {/* Core palette */}
       <DSSection

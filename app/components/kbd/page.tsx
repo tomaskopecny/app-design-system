@@ -65,7 +65,7 @@ export default function KbdPage() {
   return (
     <DSLayout
       title="Keyboard Shortcuts"
-      description="Linear is built for keyboard-first workflows. The <kbd> element renders monospaced keys with a subtle 3D press shadow. Always pair shortcuts with tooltips and the command palette."
+      description="This system is built for keyboard-first workflows. The <kbd> element renders monospaced keys with a subtle 3D press shadow. Always pair shortcuts with tooltips and the command palette."
     >
       <DSSection title="Kbd element" description="Single keys, modifier combos, and special characters.">
         <DSPreview code={`<kbd className="inline-flex items-center px-1.5 py-0.5 min-w-[20px] h-5
@@ -115,7 +115,7 @@ export default function KbdPage() {
         </DSPreview>
       </DSSection>
 
-      <DSSection title="Navigation shortcuts" description="Global keyboard shortcuts for moving around Linear.">
+      <DSSection title="Navigation shortcuts" description="Global keyboard shortcuts for moving around the app.">
         <div className="rounded-md border border-border bg-surface-1 overflow-hidden px-4 py-1">
           {shortcuts.navigation.map(s => <ShortcutRow key={s.action} {...s} />)}
         </div>

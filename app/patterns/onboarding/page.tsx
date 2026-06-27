@@ -107,7 +107,7 @@ function GettingStarted() {
           <Sparkles className="w-3.5 h-3.5 text-priority-medium" aria-hidden="true" />
           <p className="text-sm font-semibold text-foreground">Getting started</p>
         </div>
-        <p className="text-xs text-muted-foreground">Complete these steps to get the most out of Linear.</p>
+        <p className="text-xs text-muted-foreground">Complete these steps to get the most out of the app.</p>
         <div className="mt-3 flex items-center gap-2">
           <div className="flex-1 h-1 rounded-full bg-surface-3 overflow-hidden">
             <div className="h-full rounded-full bg-status-done transition-all" style={{ width: `${pct}%` }} aria-hidden="true" />

@@ -4,7 +4,7 @@ import { DSLayout } from '@/components/ds/ds-layout'
 import { DSSection, DSPreview } from '@/components/ds/ds-section'
 import { useState } from 'react'
 
-// The canonical spinner — a plain CSS arc. Matches Linear's own spinner anatomy.
+// The canonical spinner — a plain CSS arc.
 function Spinner({
   size = 'md',
   color = 'default',

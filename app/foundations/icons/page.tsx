@@ -92,7 +92,7 @@ export default function IconsPage() {
   return (
     <DSLayout
       title="Icons"
-      description="Linear uses Lucide React with strokeWidth={1.5} at 14px by default. Icons are always text-muted-foreground at rest and text-foreground on hover or active states."
+      description="Lucide React with strokeWidth={1.5} at 14px by default. Icons are always text-muted-foreground at rest and text-foreground on hover or active states."
     >
       <DSSection title="Sizes" description="Five sizes with recommended use cases. Always use w-N h-N Tailwind classes — never resize with CSS transforms.">
         <DSPreview>
@@ -110,7 +110,7 @@ export default function IconsPage() {
         </DSPreview>
       </DSSection>
 
-      <DSSection title="Stroke width" description="Always use strokeWidth={1.5} — this is the defining visual trait of Linear's icons. Never use the default 2px.">
+      <DSSection title="Stroke width" description="Always use strokeWidth={1.5} — the defining visual trait of this system's icons. Never use the default 2px.">
         <DSPreview code={`// Always
 <Settings className="w-4 h-4" strokeWidth={1.5} />
 

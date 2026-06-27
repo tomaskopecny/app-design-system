@@ -411,7 +411,7 @@ function WeekTimeGrid() {
   )
 }
 
-// ─── 5. Dual-month date picker (Linear due date style) ───────────────────────
+// ─── 5. Dual-month date picker ──────────────────────────────────────────────
 
 function DualMonthPicker() {
   const [selected, setSelected] = useState<Date | undefined>(undefined)
@@ -709,7 +709,7 @@ export default function CalendarPage() {
 
       <DSSection
         title="Dual-month due date picker"
-        description="Linear-style modal picker showing the current and next month side by side. Includes a typed date input, today circled, and Save / Cancel actions."
+        description="Date picker modal showing the current and next month side by side. Includes a typed date input, today circled, and Save / Cancel actions."
       >
         <DSPreview>
           <DualMonthPicker />

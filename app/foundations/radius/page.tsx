@@ -15,7 +15,7 @@ export default function RadiusPage() {
   return (
     <DSLayout
       title="Border Radius"
-      description="Linear uses very restrained border radii — the base unit is 6px. Sharp corners signal precision and focus. Use rounded-full only for circular elements."
+      description="This system uses very restrained border radii — the base unit is 6px. Sharp corners signal precision and focus. Use rounded-full only for circular elements."
     >
       <DSSection
         title="Radius scale"
