@@ -94,8 +94,8 @@ function ModalFooterFull({
 function PermissionModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
     <Modal open={open} onClose={onClose} width="max-w-sm">
-      <div className="px-5 pt-5 pb-5 space-y-3">
-        <h2 className="text-base font-semibold text-foreground">Missing permission</h2>
+      <ModalHeader title="Missing permission" onClose={onClose} />
+      <div className="px-5 py-4 space-y-3">
         <div className="flex items-start gap-3 px-4 py-3 rounded-md bg-[var(--yellow-800)]/40 border border-[var(--yellow-700)]/50">
           <AlertCircle className="w-4 h-4 text-[var(--yellow-400)] shrink-0 mt-0.5" />
           <p className="text-xs text-muted-foreground leading-relaxed">
@@ -117,17 +117,15 @@ function PermissionModal({ open, onClose }: { open: boolean; onClose: () => void
 function DestructiveFullModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
     <Modal open={open} onClose={onClose} width="max-w-sm">
-      <div className="px-5 pt-5 pb-5 space-y-3">
+      <ModalHeader title="Delete project" onClose={onClose} />
+      <div className="px-5 py-4 space-y-3">
         <div className="flex items-start gap-3">
           <div className="w-8 h-8 rounded-full bg-destructive/15 flex items-center justify-center shrink-0">
             <Trash2 className="w-4 h-4 text-destructive" />
           </div>
-          <div>
-            <h2 className="text-sm font-semibold text-foreground">Delete project</h2>
-            <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-              All issues and data will be permanently removed. This cannot be undone.
-            </p>
-          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            All issues and data will be permanently removed. This cannot be undone.
+          </p>
         </div>
       </div>
       <ModalFooterFull
@@ -146,8 +144,8 @@ function CreateFullModal({ open, onClose }: { open: boolean; onClose: () => void
   const [desc, setDesc] = useState('')
   return (
     <Modal open={open} onClose={onClose} width="max-w-sm">
-      <div className="px-5 pt-5 pb-4 space-y-3">
-        <h2 className="text-base font-semibold text-foreground">New project</h2>
+      <ModalHeader title="New project" onClose={onClose} />
+      <div className="px-5 py-4 space-y-3">
         <div className="space-y-2">
           <input
             autoFocus
