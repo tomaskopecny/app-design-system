@@ -68,7 +68,7 @@ function Callout({
       <v.Icon className={`w-4 h-4 shrink-0 ${v.icon}`} aria-hidden="true" />
       <div className="flex-1 min-w-0">
         {title && <p className="text-xs font-semibold text-foreground">{title}</p>}
-        <p className={`text-xs leading-relaxed ${title ? 'text-muted-foreground mt-0.5' : v.text}`}>{children}</p>
+        <p className={`text-xs leading-relaxed ${title ? 'text-muted-foreground' : v.text}`}>{children}</p>
       </div>
       {dismissible && (
         <button
