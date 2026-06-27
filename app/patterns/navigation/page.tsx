@@ -237,7 +237,7 @@ function TabBarDemo() {
 }
 
 // ---------------------------------------------------------------------------
-// Marketing top nav — Linear-style
+// Marketing top nav
 // ---------------------------------------------------------------------------
 
 const MEGA_ITEMS = [
@@ -258,9 +258,9 @@ function MarketingNav({ align = 'right' }: { align?: 'left' | 'center' | 'right'
   const Logo = () => (
     <div className="flex items-center gap-2 shrink-0 select-none">
       <div className="w-5 h-5 rounded-[4px] bg-foreground flex items-center justify-center">
-        <span className="text-[9px] font-black text-background leading-none">L</span>
+        <span className="text-[9px] font-black text-background leading-none">A</span>
       </div>
-      <span className="text-sm font-semibold text-foreground">Linear</span>
+      <span className="text-sm font-semibold text-foreground">A Design System</span>
     </div>
   )
 
@@ -415,9 +415,9 @@ function HamburgerDemo() {
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2 select-none">
           <div className="w-5 h-5 rounded-[4px] bg-foreground flex items-center justify-center">
-            <span className="text-[9px] font-black text-background leading-none">L</span>
+            <span className="text-[9px] font-black text-background leading-none">A</span>
           </div>
-          <span className="text-sm font-semibold text-foreground">Linear</span>
+          <span className="text-sm font-semibold text-foreground">A Design System</span>
         </div>
         <button
           onClick={() => setOpen(!open)}
