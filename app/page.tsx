@@ -41,6 +41,7 @@ import {
   Sparkles,
   Layers2,
   BookOpen,
+  Menu,
 } from 'lucide-react'
 
 const cards = [
@@ -74,6 +75,7 @@ const cards = [
       { label: 'Code Block',          href: '/components/code-block',        icon: Code2,             desc: 'Syntax-styled code display with copy button' },
       { label: 'Drawer',              href: '/components/drawer',            icon: SlidersHorizontal, desc: 'Right, left and bottom sliding panels for detail views and filters' },
       { label: 'Empty States',        href: '/components/empty-states',      icon: FileX,             desc: 'Blank slate patterns with CTA guidance' },
+      { label: 'FAB Menu',            href: '/components/fab-menu',          icon: Menu,              desc: 'Floating action button with bottom sheet navigation for mobile UIs' },
       { label: 'Inputs',              href: '/components/inputs',            icon: FormInput,         desc: 'Text, search, char count, inline action and validation' },
       { label: 'Keyboard Shortcuts',  href: '/components/kbd',               icon: Keyboard,          desc: 'Kbd tags, shortcut hints and combo display' },
       { label: 'Link',                href: '/components/link',              icon: Link2,             desc: 'Text links, external variants and link button' },
