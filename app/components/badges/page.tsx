@@ -7,7 +7,7 @@ import { useState } from 'react'
 
 function Badge({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] font-medium leading-none ${className}`}>
+    <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[11px] font-medium leading-none ${className}`}>
       {children}
     </span>
   )
@@ -47,7 +47,7 @@ function RemovableTagDemo() {
       {tags.map(tag => (
         <span
           key={tag.id}
-          className="inline-flex items-center gap-1 pl-2 pr-1 py-0.5 rounded-sm text-[11px] font-medium border"
+          className="inline-flex items-center gap-1 pl-2 pr-1 py-0.5 rounded-full text-[11px] font-medium border"
           style={{ background: tag.color + '18', color: tag.color, borderColor: tag.color + '35' }}
         >
           {tag.label}
