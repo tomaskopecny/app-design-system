@@ -148,9 +148,9 @@ export default function ChartsPage() {
               <YAxis {...axisProps} />
               <ChartTooltip content={<ChartTooltipContent />} />
               <ChartLegend content={<ChartLegendContent />} />
-              <Line type="monotone" dataKey="opened"     stroke="var(--color-opened)"     strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="closed"     stroke="var(--color-closed)"     strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="inProgress" stroke="var(--color-inProgress)" strokeWidth={2} dot={false} strokeDasharray="4 2" />
+              <Line type="linear" dataKey="opened"     stroke="var(--color-opened)"     strokeWidth={2} dot={{ r: 2, strokeWidth: 0 }} activeDot={{ r: 3 }} />
+              <Line type="linear" dataKey="closed"     stroke="var(--color-closed)"     strokeWidth={2} dot={{ r: 2, strokeWidth: 0 }} activeDot={{ r: 3 }} />
+              <Line type="linear" dataKey="inProgress" stroke="var(--color-inProgress)" strokeWidth={2} dot={{ r: 2, strokeWidth: 0 }} activeDot={{ r: 3 }} strokeDasharray="4 2" />
             </LineChart>
           </ChartContainer>
         </div>
@@ -230,9 +230,9 @@ export default function ChartsPage() {
               <YAxis {...axisProps} />
               <ChartTooltip content={<ChartTooltipContent />} />
               <ChartLegend content={<ChartLegendContent />} />
-              <Area type="monotone" dataKey="todo"       stroke="var(--color-todo)"       fill="url(#gradTodo)"       strokeWidth={2} />
-              <Area type="monotone" dataKey="inProgress" stroke="var(--color-inProgress)" fill="url(#gradInProgress)" strokeWidth={2} />
-              <Area type="monotone" dataKey="done"       stroke="var(--color-done)"       fill="url(#gradDone)"       strokeWidth={2} />
+              <Area type="linear" dataKey="todo"       stroke="var(--color-todo)"       fill="url(#gradTodo)"       strokeWidth={2} dot={false} />
+              <Area type="linear" dataKey="inProgress" stroke="var(--color-inProgress)" fill="url(#gradInProgress)" strokeWidth={2} dot={false} />
+              <Area type="linear" dataKey="done"       stroke="var(--color-done)"       fill="url(#gradDone)"       strokeWidth={2} dot={false} />
             </AreaChart>
           </ChartContainer>
         </div>
@@ -311,7 +311,7 @@ export default function ChartsPage() {
                 <ChartContainer config={sparkConfig} className="h-12 w-24 shrink-0">
                   <LineChart data={sparkLines[label]} margin={{ top: 2, right: 2, left: 2, bottom: 2 }}>
                     <Line
-                      type="monotone"
+                      type="linear"
                       dataKey="v"
                       stroke={up ? 'var(--color-v)' : 'var(--chart-5)'}
                       strokeWidth={1.5}
