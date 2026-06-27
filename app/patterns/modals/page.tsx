@@ -141,6 +141,41 @@ function DestructiveFullModal({ open, onClose }: { open: boolean; onClose: () =>
   )
 }
 
+function CreateFullModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [name, setName] = useState('')
+  const [desc, setDesc] = useState('')
+  return (
+    <Modal open={open} onClose={onClose} width="max-w-sm">
+      <div className="px-5 pt-5 pb-4 space-y-3">
+        <h2 className="text-base font-semibold text-foreground">New project</h2>
+        <div className="space-y-2">
+          <input
+            autoFocus
+            value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder="Project name"
+            className="w-full px-3 py-2 text-sm rounded-md bg-surface-2 border border-border text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring"
+          />
+          <textarea
+            value={desc}
+            onChange={e => setDesc(e.target.value)}
+            placeholder="Description (optional)"
+            rows={3}
+            className="w-full px-3 py-2 text-sm rounded-md bg-surface-2 border border-border text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring resize-none"
+          />
+        </div>
+      </div>
+      <ModalFooterFull
+        cancelLabel="Cancel"
+        confirmLabel="Create project"
+        onCancel={onClose}
+        onConfirm={onClose}
+        variant="default"
+      />
+    </Modal>
+  )
+}
+
 function CreateIssueModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [title, setTitle] = useState('')
   const [priority, setPriority] = useState('medium')
@@ -279,6 +314,7 @@ export default function ModalsPage() {
   const [alertOpen, setAlertOpen] = useState(false)
   const [permissionOpen, setPermissionOpen] = useState(false)
   const [destructiveFullOpen, setDestructiveFullOpen] = useState(false)
+  const [createFullOpen, setCreateFullOpen] = useState(false)
 
   return (
     <DSLayout
@@ -353,9 +389,17 @@ export default function ModalsPage() {
             <Trash2 className="w-3.5 h-3.5" />
             Destructive modal
           </button>
+          <button
+            onClick={() => setCreateFullOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-surface-2 border border-border text-foreground hover:bg-surface-3 transition-colors cursor-pointer"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            Creation modal
+          </button>
         </div>
         <PermissionModal open={permissionOpen} onClose={() => setPermissionOpen(false)} />
         <DestructiveFullModal open={destructiveFullOpen} onClose={() => setDestructiveFullOpen(false)} />
+        <CreateFullModal open={createFullOpen} onClose={() => setCreateFullOpen(false)} />
       </DSSection>
 
       <DSSection title="Modal anatomy">
