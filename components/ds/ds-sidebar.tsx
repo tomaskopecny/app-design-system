@@ -71,6 +71,7 @@ const sections = [
       { label: 'Buttons',             href: '/components/buttons',           icon: Box },
       { label: 'Calendar',            href: '/components/calendar',          icon: Calendar },
       { label: 'Callout',             href: '/components/callout',           icon: AlertCircle },
+      { label: 'Charts',              href: '/components/charts',            icon: BarChart2 },
       { label: 'Checkboxes & Radio',  href: '/components/checkboxes',        icon: CheckSquare },
       { label: 'Code Block',          href: '/components/code-block',        icon: Code2 },
       { label: 'Drawer',              href: '/components/drawer',            icon: SlidersHorizontal },
