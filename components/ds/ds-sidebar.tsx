@@ -44,6 +44,7 @@ import {
   Layers2,
   BookOpen,
   X,
+  Menu,
 } from 'lucide-react'
 
 const sections = [
@@ -77,6 +78,7 @@ const sections = [
       { label: 'Code Block',          href: '/components/code-block',        icon: Code2 },
       { label: 'Drawer',              href: '/components/drawer',            icon: SlidersHorizontal },
       { label: 'Empty States',        href: '/components/empty-states',      icon: FileX },
+      { label: 'FAB Menu',            href: '/components/fab-menu',          icon: Menu },
       { label: 'Inputs',              href: '/components/inputs',            icon: FormInput },
       { label: 'Keyboard Shortcuts',  href: '/components/kbd',               icon: Keyboard },
       { label: 'Link',                href: '/components/link',              icon: Link2 },
