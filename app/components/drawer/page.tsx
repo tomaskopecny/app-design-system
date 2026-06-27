@@ -3,7 +3,7 @@
 import { DSLayout } from '@/components/ds/ds-layout'
 import { DSSection, DSPreview } from '@/components/ds/ds-section'
 import { useState } from 'react'
-import { X, SlidersHorizontal, Settings, Bell, CheckCircle2, Circle, AlertCircle, ChevronRight, Filter } from 'lucide-react'
+import { X, SlidersHorizontal, Settings, Bell, CheckCircle2, Circle, AlertCircle, ChevronRight, Filter, Pencil } from 'lucide-react'
 
 // ---------------------------------------------------------------------------
 // Base Drawer primitive
@@ -59,6 +59,78 @@ function Drawer({
         <div className="flex-1 overflow-y-auto">{children}</div>
       </div>
     </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Drawer footer variants — mirrors ModalFooter / ModalFooterFull
+// ---------------------------------------------------------------------------
+
+// Standard footer: buttons right-aligned (matches ModalFooter)
+function DrawerFooter({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center justify-end gap-2 px-5 py-3.5 border-t border-border bg-surface-1 shrink-0">
+      {children}
+    </div>
+  )
+}
+
+// Full-width split footer: two equal buttons flush to the drawer's bottom edge
+function DrawerFooterFull({
+  cancelLabel = 'Cancel',
+  confirmLabel = 'Save',
+  onCancel,
+  onConfirm,
+  variant = 'default',
+}: {
+  cancelLabel?: string
+  confirmLabel?: string
+  onCancel: () => void
+  onConfirm: () => void
+  variant?: 'default' | 'destructive'
+}) {
+  const confirmCls = variant === 'destructive'
+    ? 'bg-destructive text-white hover:bg-destructive/90'
+    : 'bg-foreground text-background hover:bg-foreground/90'
+  return (
+    <div className="flex border-t border-border shrink-0">
+      <button
+        onClick={onCancel}
+        className="flex-1 py-3.5 text-sm font-medium text-foreground bg-surface-2 hover:bg-surface-3 transition-colors cursor-pointer"
+      >
+        {cancelLabel}
+      </button>
+      <div className="w-px bg-border shrink-0" />
+      <button
+        onClick={onConfirm}
+        className={`flex-1 py-3.5 text-sm font-medium transition-colors cursor-pointer ${confirmCls}`}
+      >
+        {confirmLabel}
+      </button>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Toggle primitive (fixed: avoids transform conflict with -translate-y-1/2)
+// ---------------------------------------------------------------------------
+
+function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <button
+      role="switch"
+      aria-checked={checked}
+      onClick={() => onChange(!checked)}
+      className={`relative w-9 h-5 rounded-full transition-colors shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring ${checked ? 'bg-[var(--green-700)]' : 'bg-surface-3'}`}
+    >
+      <span
+        className={`absolute top-[3px] w-3.5 h-3.5 rounded-full shadow-sm transition-all duration-150 ${
+          checked
+            ? 'left-[18px] bg-white'
+            : 'left-[3px] bg-muted-foreground/60'
+        }`}
+      />
+    </button>
   )
 }
 
@@ -127,7 +199,7 @@ function IssueDrawerDemo() {
 }
 
 // ---------------------------------------------------------------------------
-// Demo: Settings drawer (left)
+// Demo: Settings drawer (left) — fixed toggle
 // ---------------------------------------------------------------------------
 
 function SettingsDrawerDemo() {
@@ -147,7 +219,7 @@ function SettingsDrawerDemo() {
       <Drawer open={open} onClose={() => setOpen(false)} title="Preferences" side="left">
         <div className="px-5 py-4 space-y-1">
           {[
-            { label: 'Email notifications', desc: 'Receive updates for assigned issues', value: notif, set: setNotif },
+            { label: 'Email notifications', desc: 'Receive updates for assigned issues', value: notif,   set: setNotif },
             { label: 'Compact mode',        desc: 'Reduce row height in issue lists',   value: compact, set: setCompact },
           ].map(({ label, desc, value, set }) => (
             <div key={label} className="flex items-center justify-between py-3 border-b border-border last:border-0">
@@ -155,20 +227,7 @@ function SettingsDrawerDemo() {
                 <p className="text-sm text-foreground">{label}</p>
                 <p className="text-[11px] text-muted-foreground mt-0.5">{desc}</p>
               </div>
-              <button
-                role="switch"
-                aria-checked={value}
-                onClick={() => set(!value)}
-                className={`relative w-9 h-5 rounded-full transition-colors shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring ${value ? 'bg-[var(--green-700)]' : 'bg-surface-3'}`}
-              >
-                <span
-                  className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full shadow-sm transition-transform duration-150"
-                  style={{
-                    transform: `translateY(-50%) translateX(${value ? '18px' : '3px'})`,
-                    backgroundColor: value ? 'oklch(0.97 0 0)' : 'oklch(0.72 0 0)',
-                  }}
-                />
-              </button>
+              <Toggle checked={value} onChange={set} />
             </div>
           ))}
           <div className="pt-4">
@@ -191,9 +250,9 @@ function SettingsDrawerDemo() {
 // ---------------------------------------------------------------------------
 
 const FILTER_STATUSES = [
-  { label: 'Todo',        icon: Circle,        color: 'text-muted-foreground' },
-  { label: 'In Progress', icon: AlertCircle,   color: 'text-[#4D8EE8]' },
-  { label: 'Done',        icon: CheckCircle2,  color: 'text-[var(--status-done)]' },
+  { label: 'Todo',        icon: Circle,       color: 'text-muted-foreground' },
+  { label: 'In Progress', icon: AlertCircle,  color: 'text-[#4D8EE8]' },
+  { label: 'Done',        icon: CheckCircle2, color: 'text-[var(--status-done)]' },
 ]
 
 function FilterDrawerDemo() {
@@ -218,7 +277,7 @@ function FilterDrawerDemo() {
         )}
       </button>
       <Drawer open={open} onClose={() => setOpen(false)} title="Filter issues" side="bottom">
-        <div className="px-5 py-4 pb-8 space-y-5">
+        <div className="px-5 py-4 space-y-5">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">Status</p>
             <div className="flex flex-wrap gap-2">
@@ -254,21 +313,155 @@ function FilterDrawerDemo() {
               ))}
             </div>
           </div>
-          <div className="flex justify-end gap-2 pt-2">
-            <button
-              onClick={() => { setSelected([]); setOpen(false) }}
-              className="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+        </div>
+        <DrawerFooter>
+          <button
+            onClick={() => { setSelected([]); setOpen(false) }}
+            className="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+          >
+            Clear all
+          </button>
+          <button
+            onClick={() => setOpen(false)}
+            className="px-4 py-1.5 text-xs font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 transition-colors cursor-pointer"
+          >
+            Apply filters
+          </button>
+        </DrawerFooter>
+      </Drawer>
+    </>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Demo: Edit drawer — standard footer (right)
+// ---------------------------------------------------------------------------
+
+function EditDrawerDemo() {
+  const [open, setOpen] = useState(false)
+  const [name, setName] = useState('Implement command palette')
+  const [priority, setPriority] = useState('Urgent')
+  const [status, setStatus] = useState('In Progress')
+
+  return (
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-surface-2 border border-border text-foreground hover:bg-surface-3 transition-colors cursor-pointer"
+      >
+        <Pencil className="w-3.5 h-3.5" />
+        Edit issue
+      </button>
+      <Drawer open={open} onClose={() => setOpen(false)} title="Edit ENG-2451" side="right">
+        <div className="px-5 py-4 space-y-4 flex-1">
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Title</label>
+            <input
+              value={name}
+              onChange={e => setName(e.target.value)}
+              className="w-full px-3 py-2 text-sm rounded-md bg-surface-2 border border-border text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Status</label>
+            <select
+              value={status}
+              onChange={e => setStatus(e.target.value)}
+              className="w-full px-3 py-2 text-sm rounded-md bg-surface-2 border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
             >
-              Clear all
-            </button>
-            <button
-              onClick={() => setOpen(false)}
-              className="px-4 py-1.5 text-xs font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 transition-colors cursor-pointer"
+              {['Todo', 'In Progress', 'Done', 'Cancelled'].map(s => <option key={s}>{s}</option>)}
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Priority</label>
+            <select
+              value={priority}
+              onChange={e => setPriority(e.target.value)}
+              className="w-full px-3 py-2 text-sm rounded-md bg-surface-2 border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
             >
-              Apply filters
-            </button>
+              {['No priority', 'Urgent', 'High', 'Medium', 'Low'].map(p => <option key={p}>{p}</option>)}
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Description</label>
+            <textarea
+              rows={4}
+              placeholder="Add description..."
+              className="w-full px-3 py-2 text-sm rounded-md bg-surface-2 border border-border text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring resize-none"
+            />
           </div>
         </div>
+        <DrawerFooter>
+          <button
+            onClick={() => setOpen(false)}
+            className="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => setOpen(false)}
+            className="px-4 py-1.5 text-xs font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 transition-colors cursor-pointer"
+          >
+            Save changes
+          </button>
+        </DrawerFooter>
+      </Drawer>
+    </>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Demo: Edit drawer — full-width split footer (right)
+// ---------------------------------------------------------------------------
+
+function EditDrawerFullFooterDemo() {
+  const [open, setOpen] = useState(false)
+  const [name, setName] = useState('Redesign onboarding flow')
+  const [priority, setPriority] = useState('High')
+
+  return (
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-surface-2 border border-border text-foreground hover:bg-surface-3 transition-colors cursor-pointer"
+      >
+        <Pencil className="w-3.5 h-3.5" />
+        Edit with split footer
+      </button>
+      <Drawer open={open} onClose={() => setOpen(false)} title="Edit ENG-1188" side="right">
+        <div className="px-5 py-4 space-y-4">
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Title</label>
+            <input
+              value={name}
+              onChange={e => setName(e.target.value)}
+              className="w-full px-3 py-2 text-sm rounded-md bg-surface-2 border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Priority</label>
+            <select
+              value={priority}
+              onChange={e => setPriority(e.target.value)}
+              className="w-full px-3 py-2 text-sm rounded-md bg-surface-2 border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+            >
+              {['No priority', 'Urgent', 'High', 'Medium', 'Low'].map(p => <option key={p}>{p}</option>)}
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Assignee</label>
+            <input
+              defaultValue="Alex F."
+              className="w-full px-3 py-2 text-sm rounded-md bg-surface-2 border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+            />
+          </div>
+        </div>
+        <DrawerFooterFull
+          cancelLabel="Cancel"
+          confirmLabel="Save changes"
+          onCancel={() => setOpen(false)}
+          onConfirm={() => setOpen(false)}
+        />
       </Drawer>
     </>
   )
@@ -295,7 +488,7 @@ export default function DrawerPage() {
 
       <DSSection
         title="Left drawer — settings"
-        description="Slides in from the left. Used for persistent navigation panels, workspace settings, or secondary navigation that relates to the leading edge of the layout."
+        description="Slides in from the left. Used for persistent navigation panels, workspace settings, or secondary navigation. Toggles use top/left positioning to avoid CSS transform conflicts."
       >
         <DSPreview code={`<Drawer open={open} onClose={() => setOpen(false)} title="Preferences" side="left">
   {/* content */}
@@ -306,34 +499,77 @@ export default function DrawerPage() {
 
       <DSSection
         title="Bottom drawer — filters"
-        description="Rises from the bottom edge. Preferred on mobile for filter sheets, action sheets, and pickers. On desktop it can also work for contextual toolbars."
+        description="Rises from the bottom edge. Preferred on mobile for filter sheets and action sheets. Uses DrawerFooter for the Apply/Clear actions."
       >
         <DSPreview code={`<Drawer open={open} onClose={() => setOpen(false)} title="Filter issues" side="bottom">
   {/* content */}
+  <DrawerFooter>
+    <button>Clear all</button>
+    <button>Apply filters</button>
+  </DrawerFooter>
 </Drawer>`}>
           <FilterDrawerDemo />
         </DSPreview>
       </DSSection>
 
+      <DSSection
+        title="Edit drawer — standard footer"
+        description="A right drawer for editing a record. DrawerFooter places Cancel and Save buttons right-aligned above the drawer's bottom edge, matching the ModalFooter pattern."
+      >
+        <DSPreview code={`<Drawer open={open} onClose={() => setOpen(false)} title="Edit ENG-2451" side="right">
+  {/* form fields */}
+  <DrawerFooter>
+    <button>Cancel</button>
+    <button>Save changes</button>
+  </DrawerFooter>
+</Drawer>`}>
+          <EditDrawerDemo />
+        </DSPreview>
+      </DSSection>
+
+      <DSSection
+        title="Edit drawer — full-width split footer"
+        description="Same edit pattern but with DrawerFooterFull: two equal-width buttons flush to the drawer's bottom edge, separated by a vertical divider. Mirrors the ModalFooterFull pattern for visual consistency."
+      >
+        <DSPreview code={`<Drawer open={open} onClose={() => setOpen(false)} title="Edit ENG-1188" side="right">
+  {/* form fields */}
+  <DrawerFooterFull
+    cancelLabel="Cancel"
+    confirmLabel="Save changes"
+    onCancel={onClose}
+    onConfirm={handleSave}
+  />
+</Drawer>`}>
+          <EditDrawerFullFooterDemo />
+        </DSPreview>
+      </DSSection>
+
       <DSSection title="Drawer anatomy">
         <DSPreview code={`// side: 'right' | 'left' | 'bottom'
-// Clicking the backdrop calls onClose — same as modal pattern.
-// Bottom drawer uses max-h-[85vh] + overflow-y-auto to stay scrollable.
+// DrawerFooter   — right-aligned buttons, matches ModalFooter
+// DrawerFooterFull — full-width split, matches ModalFooterFull
 
 <Drawer
   open={open}
   onClose={() => setOpen(false)}
-  title="Panel title"   // omit for title-less drawers
-  side="right"          // default
-  width="w-80"          // only applies to left/right sides
+  title="Panel title"
+  side="right"
+  width="w-80"
 >
-  <div className="px-5 py-4">
-    {/* Drawer body */}
+  <div className="px-5 py-4 flex-1">
+    {/* body */}
   </div>
+  <DrawerFooterFull
+    cancelLabel="Cancel"
+    confirmLabel="Save"
+    onCancel={onClose}
+    onConfirm={handleSave}
+  />
 </Drawer>`}>
-          <span className="text-xs text-muted-foreground">See code snippet below</span>
+          <span className="text-xs text-muted-foreground">See code snippet above</span>
         </DSPreview>
       </DSSection>
+
     </DSLayout>
   )
 }
