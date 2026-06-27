@@ -34,7 +34,8 @@ function Drawer({
     left:   'top-0 left-0 h-full border-r border-border',
     bottom: 'bottom-0 left-0 right-0 border-t border-border rounded-t-xl',
   }
-  const panelClass = [panelBase, shadows[side], side !== 'bottom' ? width : 'h-auto max-h-[85vh]'].join(' ')
+  const sideWidth = side !== 'bottom' ? `${width} max-w-[85vw]` : 'h-auto max-h-[85vh] w-full'
+  const panelClass = [panelBase, shadows[side], sideWidth].join(' ')
 
   return (
     <div className="fixed inset-0 z-50 flex" onClick={onClose} aria-modal="true" role="dialog">
@@ -50,7 +51,7 @@ function Drawer({
             <button
               onClick={onClose}
               aria-label="Close drawer"
-              className="w-6 h-6 flex items-center justify-center rounded-sm text-muted-foreground hover:text-foreground hover:bg-surface-3 transition-colors cursor-pointer"
+              className="w-8 h-8 flex items-center justify-center rounded-sm text-muted-foreground hover:text-foreground hover:bg-surface-3 active:opacity-70 transition-colors cursor-pointer touch-manipulation"
             >
               <X className="w-3.5 h-3.5" />
             </button>
