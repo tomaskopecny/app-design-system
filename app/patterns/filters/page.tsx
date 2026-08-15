@@ -2,8 +2,9 @@
 
 import { DSLayout } from '@/components/ds/ds-layout'
 import { DSSection, DSPreview } from '@/components/ds/ds-section'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Filter, X, ChevronDown, Search, AlertCircle, ArrowUp, ArrowRight, ArrowDown, Minus, Circle, CircleDot, CheckCircle2 } from 'lucide-react'
+import { useClickOutside } from '@/hooks/use-click-outside'
 
 type FilterChip = {
   id: string
@@ -35,8 +36,10 @@ function FilterDropdown({ label, options, onSelect }: {
   onSelect: (opt: { label: string; color?: string }) => void
 }) {
   const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  useClickOutside(ref, () => setOpen(false), open)
   return (
-    <div className="relative">
+    <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
         className="inline-flex items-center gap-1 h-6 px-2 rounded-md bg-surface-2 border border-border text-xs text-muted-foreground hover:text-foreground hover:bg-surface-3 transition-colors cursor-pointer"
