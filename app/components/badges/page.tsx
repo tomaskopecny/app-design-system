@@ -102,10 +102,10 @@ function SelectableTagGroup() {
               role="checkbox"
               aria-checked={isSelected}
               onClick={() => toggle(label)}
-              className={`px-3 py-1.5 rounded-full text-[13px] font-medium leading-none transition-colors cursor-pointer border
+              className={`px-2 py-0.5 rounded-full text-[11px] font-medium leading-normal transition-colors cursor-pointer border
                 ${isSelected
-                  ? 'bg-[#4D8EE8]/15 text-[#4D8EE8] border-[#4D8EE8]/30 hover:bg-[#4D8EE8]/20'
-                  : 'bg-surface-2 text-foreground border-transparent hover:bg-surface-3'}`}
+                  ? 'bg-[#4D8EE8]/15 text-[#4D8EE8] border-[#4D8EE8]/35 hover:bg-[#4D8EE8]/20'
+                  : 'bg-surface-2 text-foreground border-border hover:bg-surface-3'}`}
             >
               {label}
             </button>
@@ -263,9 +263,10 @@ export default function BadgesPage() {
           <CodeSnippet code={`<button
   aria-checked={isSelected}
   role="checkbox"
-  className={isSelected
-    ? "bg-[#4D8EE8]/15 text-[#4D8EE8] border-[#4D8EE8]/30"
-    : "bg-surface-2 text-foreground border-transparent hover:bg-surface-3"}
+  className="px-2 py-0.5 rounded-full text-[11px] font-medium border"
+  style={isSelected
+    ? "bg-[#4D8EE8]/15 text-[#4D8EE8] border-[#4D8EE8]/35"
+    : "bg-surface-2 text-foreground border-border"}
 >
   New business
 </button>`} />
