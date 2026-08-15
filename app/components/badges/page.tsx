@@ -72,6 +72,50 @@ function RemovableTagDemo() {
   )
 }
 
+const REACH_OUT_OPTIONS = [
+  'New business',
+  'General inquiry',
+  'Press & media',
+  'Partnerships',
+  'Product feedback',
+  'Technical support',
+  'Other',
+]
+
+function SelectableTagGroup() {
+  const [selected, setSelected] = useState<string[]>(['New business'])
+
+  const toggle = (label: string) => {
+    setSelected(prev => prev.includes(label) ? prev.filter(l => l !== label) : [...prev, label])
+  }
+
+  return (
+    <div className="flex flex-col gap-3 w-full">
+      <p className="text-sm text-foreground">What are you reaching out about?</p>
+      <div className="flex flex-wrap gap-2" role="group" aria-label="What are you reaching out about?">
+        {REACH_OUT_OPTIONS.map(label => {
+          const isSelected = selected.includes(label)
+          return (
+            <button
+              key={label}
+              type="button"
+              role="checkbox"
+              aria-checked={isSelected}
+              onClick={() => toggle(label)}
+              className={`px-2 py-0.5 rounded-full text-[11px] font-medium leading-normal transition-colors cursor-pointer border
+                ${isSelected
+                  ? 'bg-[#4D8EE8]/15 text-[#4D8EE8] border-[#4D8EE8]/35 hover:bg-[#4D8EE8]/20'
+                  : 'bg-surface-2 text-foreground border-border hover:bg-surface-3'}`}
+            >
+              {label}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export default function BadgesPage() {
   return (
     <DSLayout
@@ -207,6 +251,25 @@ export default function BadgesPage() {
           <PreviewBox>
             <RemovableTagDemo />
           </PreviewBox>
+        </div>
+      </DSSection>
+
+      {/* Selectable tags */}
+      <DSSection title="Selectable tag badges" description="Toggleable choice tags for single or multi-select questions. Click to select or deselect; any number of tags can be active at once.">
+        <div className="rounded-md border border-border overflow-hidden">
+          <PreviewBox className="items-start">
+            <SelectableTagGroup />
+          </PreviewBox>
+          <CodeSnippet code={`<button
+  aria-checked={isSelected}
+  role="checkbox"
+  className="px-2 py-0.5 rounded-full text-[11px] font-medium border"
+  style={isSelected
+    ? "bg-[#4D8EE8]/15 text-[#4D8EE8] border-[#4D8EE8]/35"
+    : "bg-surface-2 text-foreground border-border"}
+>
+  New business
+</button>`} />
         </div>
       </DSSection>
 
