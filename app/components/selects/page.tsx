@@ -3,7 +3,8 @@
 import { DSLayout } from '@/components/ds/ds-layout'
 import { DSSection } from '@/components/ds/ds-section'
 import { ChevronDown, Check, AlertCircle, ArrowUp, Minus, ArrowDown, X, Circle } from 'lucide-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { useClickOutside } from '@/hooks/use-click-outside'
 
 function CodeSnippet({ code }: { code: string }) {
   return (
@@ -40,9 +41,11 @@ const labelOptions = ['Bug', 'Feature', 'Improvement', 'Design', 'Documentation'
 function PriorityDropdown() {
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState(priorities[2])
+  const ref = useRef<HTMLDivElement>(null)
+  useClickOutside(ref, () => setOpen(false), open)
 
   return (
-    <div className="relative">
+    <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
         className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md bg-surface-2 border border-border text-foreground hover:bg-surface-3 transition-colors cursor-pointer"
@@ -73,9 +76,11 @@ function PriorityDropdown() {
 function StatusDropdown() {
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState(statuses[0])
+  const ref = useRef<HTMLDivElement>(null)
+  useClickOutside(ref, () => setOpen(false), open)
 
   return (
-    <div className="relative">
+    <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
         className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md bg-surface-2 border border-border text-foreground hover:bg-surface-3 transition-colors cursor-pointer"
@@ -106,13 +111,15 @@ function StatusDropdown() {
 function MultiSelect() {
   const [selected, setSelected] = useState<string[]>(['Bug', 'Feature'])
   const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  useClickOutside(ref, () => setOpen(false), open)
 
   const toggle = (label: string) => {
     setSelected(prev => prev.includes(label) ? prev.filter(l => l !== label) : [...prev, label])
   }
 
   return (
-    <div className="relative">
+    <div ref={ref} className="relative">
       <div
         role="button"
         tabIndex={0}
